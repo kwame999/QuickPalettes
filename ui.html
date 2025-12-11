@@ -1,12 +1,30 @@
 <h2>Test</h2>
 <form action="">
-  <input type="text" name="" id="txtField">
-  <p>include hex?</p>
-  <input type="checkbox" name="" id="">
-  <input type="text" name="valueHexField" id="hexField">
-  <p>Name Value:</p>
-  <input type="text" name="colorNameField" id="nameField">
-  <button type="submit" id="btnIniate">Test</button>
+  <div class="div">
+
+    <label for="valueHexField">Hex#</label>
+    <input type="text" name="valueHexField" id="hexField" size="4">
+    <label for="colorNameField">Name Value:</label>
+    <input type="text" name="colorNameField" id="nameField" size="20">
+   
+  </div>
+
+   <div class="btnGroup">
+         <button>+</button>
+    </div>
+
+  <div class="options-check">
+
+    <label for="colorHexField">Include hex (only):</label>
+    <input type="checkbox" name="" id="">
+    <label for="colorNameField">Include names (only):</label>
+    <input type="checkbox" name="" id="">
+    <label for="colorHexNameField">Include both:</label>
+    <input type="checkbox" name="" id="">
+    <button type="submit" id="btnIniate">Test</button>
+
+  </div>
+
 </form>
 <script>
 
@@ -19,11 +37,12 @@ const nameValueField = document.getElementById('nameField');
 btnInitiate.addEventListener("click", (e)=>{
   e.preventDefault()
 
-  const vairableName = inputField.value;
-  const nameValue = nameValueField.value;
+  // const vairableName = inputField.value;
   const hexValue =  hexValueField.value;
+  const nameValue = nameValueField.value;
+  
 
-  parent.postMessage({ pluginMessage: { setVariableName: vairableName, 
+  parent.postMessage({ pluginMessage: { 
                                         setHexValue: hexValue, 
                                         setNameText: nameValue} }, '*')
 

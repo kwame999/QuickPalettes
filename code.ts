@@ -8,7 +8,9 @@
 // full browser environment (See https://www.figma.com/plugin-docs/how-plugins-run).
 
 // This shows the HTML page in "ui.html".
+
 figma.showUI(__html__);
+figma.ui.resize(500,700)
 
 async function getUserCollections() {
   
@@ -55,7 +57,7 @@ const container = {
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.
-figma.ui.onmessage = async (msg: {setVariableName: string, setNameText: string}) => {
+figma.ui.onmessage = async (msg: {setHexValue: string, setNameText: string}) => {
   // One way of distinguishing between different types of messages sent from
   // your HTML page is to use an object with a "type" property like this.
     ////////////////////////////////////////
@@ -67,7 +69,7 @@ figma.ui.onmessage = async (msg: {setVariableName: string, setNameText: string})
 
 
        hexText = await figma.createText();
-       hexText.characters = msg.setVariableName;
+       hexText.characters = msg.setHexValue;
        hexText.fontSize = 24;
        hexText.fills = [{type: "SOLID", color: {r: 0, g: 0, b: 0}, opacity: 0.5}]
 
@@ -95,7 +97,7 @@ textNodeContainer.appendChild(colorName)
 const colorNlock = figma.createRectangle();
 colorNlock.resize(199, 230);
 colorNlock.cornerRadius = 8;
-colorNlock.fills = [{type: "SOLID", color: hexToFigmaRGB(msg.setVariableName)}]
+colorNlock.fills = [{type: "SOLID", color: hexToFigmaRGB(msg.setHexValue)}]
 ///////////////////////////////////////////////
 ///Color BLOCK AND TEXT NODES JOINED TOGETHER
 
@@ -112,7 +114,15 @@ wrapPalette.paddingRight = 19;
 wrapPalette.cornerRadius = 14;
 wrapPalette.itemSpacing = 24;
 wrapPalette.fills = [{type: "SOLID", color: ({r: 0.898, g: 0.898, b: 0.898})}]
-
+wrapPalette.strokes = [{type: "SOLID", color: {r: 0.7, g: 0.7, b: 0.7}}]
+wrapPalette.strokeWeight = 0.8;
+wrapPalette.effects =  [{type: "DROP_SHADOW",
+                         color: { r: 0.804, g: 0.788, b: 0.788, a: 0.25 },
+                         offset: { x: 0, y: 4 },   
+                         radius: 4,               
+                         visible: true,
+                         spread: 0,
+                         blendMode: "NORMAL"  }]
 
 
 

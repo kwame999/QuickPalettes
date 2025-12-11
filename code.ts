@@ -54,13 +54,16 @@ const container = {
 
 
 } as const
+
+
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.
-figma.ui.onmessage = async (msg: {setHexValue: string, setNameText: string}) => {
+figma.ui.onmessage = async (msg: {setHexValue: string, setNameText: string, colorPaletteObjects: any[]}) => {
   // One way of distinguishing between different types of messages sent from
   // your HTML page is to use an object with a "type" property like this.
     ////////////////////////////////////////
+    console.log(msg.colorPaletteObjects)
     let hexText
     let colorName
     const getTextStyle = async () => {
@@ -124,7 +127,46 @@ wrapPalette.effects =  [{type: "DROP_SHADOW",
                          spread: 0,
                          blendMode: "NORMAL"  }]
 
+wrapPalette.primaryAxisAlignItems = 'CENTER'
 
+
+
+///////////////////////////////////////////////////////////////
+///
+const colorGroupContainer = figma.createFrame();
+colorGroupContainer.layoutMode = "HORIZONTAL"
+colorGroupContainer.itemSpacing = 4;
+colorGroupContainer.paddingTop = 4;
+colorGroupContainer.paddingBottom = 4;
+colorGroupContainer.paddingLeft = 4;
+colorGroupContainer.paddingRight = 4;
+colorGroupContainer.cornerRadius = 4;
+colorGroupContainer.itemSpacing = 73;
+colorGroupContainer.primaryAxisSizingMode = "AUTO";          // HUG vertically
+colorGroupContainer.counterAxisSizingMode = "AUTO"; 
+colorGroupContainer.fills = [{type: "SOLID", color: ({r: 0, g: 0, b: 0}), opacity: 0}]
+colorGroupContainer.appendChild(wrapPalette)
+
+
+
+/////////////////////////////////////////////////////
+//Master frame that holds everything
+const masterFrame = figma.createFrame();
+masterFrame.layoutMode = "HORIZONTAL";
+masterFrame.layoutWrap = "WRAP";
+masterFrame.resize(2133, 1671);
+masterFrame.fills = [{type: "SOLID", color: ({r: 0.850, g: 0.850, b: 0.850})}]
+masterFrame.paddingTop = 213;
+masterFrame.paddingBottom = 205;
+masterFrame.paddingLeft = 139;
+masterFrame.paddingRight = 1139;
+
+masterFrame.appendChild(colorGroupContainer);
+
+/////////////////////////////////////////////////////////
+
+// const sdfdfsdfsfsdf = colorPaletteArray(msg.setHexValue, msg.setNameText)
+// console.log(sdfdfsdfsfsdf)
 
   figma.closePlugin();
 };
@@ -149,3 +191,22 @@ function hexToFigmaRGB(hex: string) {
 }
 
 
+// function colorPaletteArray(hexCode: string, hexName: string){
+
+
+//   !hexCode ? console.log("ErrOR Test") : hexCode
+
+//   colorPaletteObjects.unshift(
+
+//     {
+
+     
+//       hexCode: hexCode,
+//       hexName: hexName ? hexName : null,
+
+//     }
+//   )
+
+//   return colorPaletteObjects
+
+// }

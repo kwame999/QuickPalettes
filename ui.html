@@ -10,7 +10,7 @@
   </div>
 
    <div class="btnGroup">
-         <button>+</button>
+         <button id="btnAdd">+</button>
     </div>
 
   <div class="options-check">
@@ -31,22 +31,59 @@
 const inputField = document.getElementById('txtField');
 const btnInitiate = document.getElementById('btnIniate')
 const hexValueField = document.getElementById('hexField');
-
+const btnAdd = document.getElementById('btnAdd')
 const nameValueField = document.getElementById('nameField');
+/////////////////////
+const colorPaletteObjects = [];
+///////////////////////
 
 btnInitiate.addEventListener("click", (e)=>{
-  e.preventDefault()
+    e.preventDefault()
 
   // const vairableName = inputField.value;
-  const hexValue =  hexValueField.value;
-  const nameValue = nameValueField.value;
-  
+  ///////
 
-  parent.postMessage({ pluginMessage: { 
-                                        setHexValue: hexValue, 
-                                        setNameText: nameValue} }, '*')
+    const hexValue =  hexValueField.value;
+    const nameValue = nameValueField.value;
+
+  ///////
+
+    parent.postMessage({ pluginMessage: { 
+                                          setHexValue: hexValue, 
+                                          setNameText: nameValue,
+                                          colorPaletteObjects: colorPaletteObjects} }, '*')
 
 
 })
 
+btnAdd.addEventListener("click", (e) => {
+  
+  e.preventDefault()
+
+                                                    ///Adds color to arrayList
+  colorPaletteArray()
+  console.log("test")
+
+  
+})
+
+
+function colorPaletteArray(){
+
+  const hexValue =  hexValueField.value;
+  const nameValue = nameValueField.value;
+
+  colorPaletteObjects.unshift(
+
+    {
+
+      hexCode: hexValue,
+      hexName: nameValue ? nameValue : null,
+
+    }
+  )
+
+  return colorPaletteObjects
+
+}
 </script>

@@ -54,8 +54,11 @@ const paletteComponent = {
  
 
 figma.ui.onmessage = async (
-  msg: { setHexValue: string; setNameText: string; colorPaletteObjects: any[] }
+  msg: { setHexValue: string; setNameText: string; colorPaletteObjects: any[]; 
+         optionHex: boolean; optionName: boolean; optionNone: boolean }
 ) => {
+
+  console.log(msg.optionHex, msg.optionName, msg.optionNone)
 
   const { styles } = paletteComponent;
   const containerStyles = styles.textNodeContainer;
@@ -96,16 +99,14 @@ figma.ui.onmessage = async (
       { type: "SOLID", color: { r: 0.850, g: 0.850, b: 0.850 }, opacity: 1 },
     ];
 
-
+    
 ///////////////////////////////////////////////////////////////
 
 
    //  looping through colorPaletteObject
  
   for (const item of msg.colorPaletteObjects) {
-    setTimeout(()=>{
-      console.log("1")
-    },1000)
+
     await figma.loadFontAsync({ family: "Inter", style: "Regular" });
     setTimeout(()=>{
 
@@ -141,9 +142,15 @@ figma.ui.onmessage = async (
         opacity: containerStyles.opacity,
       },
     ];
+    msg.optionHex ? textNodeContainer.appendChild(hexText) : hexText.visible = false
+    msg.optionName ? textNodeContainer.appendChild(nameText) : nameText.visible = false;
 
-    textNodeContainer.appendChild(hexText);
-    textNodeContainer.appendChild(nameText);
+    if(!msg.optionHex && !msg.optionName ){
+
+       textNodeContainer.visible = false
+
+    }
+    
 
     
        // color block style

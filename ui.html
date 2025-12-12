@@ -1,30 +1,37 @@
 <h2>Test</h2>
 <form action="">
-  <div class="div">
+  <div class="main-container">
+    <div class="div">
 
-    <label for="valueHexField">Hex#</label>
-    <input type="text" name="valueHexField" id="hexField" size="4">
-    <label for="colorNameField">Name Value:</label>
-    <input type="text" name="colorNameField" id="nameField" size="20">
-   
-  </div>
-
-   <div class="btnGroup">
-         <button id="btnAdd">+</button>
+      <label for="valueHexField">Hex#</label>
+      <input type="text" name="valueHexField" id="hexField" size="4">
+      <label for="colorNameField">Name Value:</label>
+      <input type="text" name="colorNameField" id="nameField" size="20">
+    
     </div>
 
-  <div class="options-check">
+    <div class="btnGroup">
+          <button id="btnAdd">+</button>
+      </div>
 
-    <label for="colorHexField">Include hex (only):</label>
-    <input type="checkbox" name="" id="">
-    <label for="colorNameField">Include names (only):</label>
-    <input type="checkbox" name="" id="">
-    <label for="colorHexNameField">Include both:</label>
-    <input type="checkbox" name="" id="">
-    <button type="submit" id="btnIniate">Test</button>
+    <div class="options-check">
+
+      <label for="colorHexField">Include hex (only):</label>
+      <input type="checkbox" name="" id="includeHexCode">
+      <label for="colorNameField">Include names (only):</label>
+      <input type="checkbox" name="" id="includeName">
+      <label for="colorHexNameField">Include none:</label>
+      <input type="checkbox" name="" id="includeNone">
+      <button type="submit" id="btnIniate">Test</button>
+
+    </div>
+
+    <div class="hex-to-be-paleted">
+      s
+
+    </div>
 
   </div>
-
 </form>
 <script>
 
@@ -33,6 +40,11 @@ const btnInitiate = document.getElementById('btnIniate')
 const hexValueField = document.getElementById('hexField');
 const btnAdd = document.getElementById('btnAdd')
 const nameValueField = document.getElementById('nameField');
+
+
+const optionIncludeHex = document.getElementById('includeHexCode');
+const optionIncludeName = document.getElementById('includeName');
+const optionIncludNone = document.getElementById('includeNone');
 /////////////////////
 const colorPaletteObjects = [];
 ///////////////////////
@@ -45,14 +57,22 @@ btnInitiate.addEventListener("click", (e)=>{
 
     const hexValue =  hexValueField.value;
     const nameValue = nameValueField.value;
-
+    const includeHex = optionIncludeHex;
+    const includeName = optionIncludeName;
+    const includeNone = optionIncludNone;
   ///////
 
     parent.postMessage({ pluginMessage: { 
+
                                           setHexValue: hexValue, 
                                           setNameText: nameValue,
-                                          colorPaletteObjects: colorPaletteObjects} }, '*')
-
+                                          colorPaletteObjects: colorPaletteObjects,
+                                          optionHex: includeHex.checked ? true : false,
+                                          optionName: includeName.checked ? true : false,
+                                          optionNone: includeNone.checked ? true : false,
+                                        
+                                        } }, '*')
+      
 
 })
 
@@ -87,4 +107,6 @@ function colorPaletteArray(){
   return colorPaletteObjects
 
 }
+
+
 </script>

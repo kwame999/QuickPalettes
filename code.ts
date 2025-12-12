@@ -1,151 +1,228 @@
-
-// This plugin will open a window to prompt the user to enter a number, and
-// it will then create that many rectangles on the screen.
-
-// This file holds the main code for plugins. Code in this file has access to
-// the *figma document* via the figma global object.
-// You can access browser APIs in the <script> tag inside "ui.html" which has a
-// full browser environment (See https://www.figma.com/plugin-docs/how-plugins-run).
-
-// This shows the HTML page in "ui.html".
-
 figma.showUI(__html__);
-figma.ui.resize(500,700)
+figma.ui.resize(500, 700);
 
 async function getUserCollections() {
-  
-  const userSetVaribles = await figma.variables.getLocalVariablesAsync()
-  console.log(userSetVaribles)
-  const {valuesByMode} = userSetVaribles[1]
-  console.log(valuesByMode)
+  const userSetVaribles = await figma.variables.getLocalVariablesAsync();
+  console.log(userSetVaribles);
+  const { valuesByMode } = userSetVaribles[1];
+  console.log(valuesByMode);
 }
 
-const container = {
 
-  parentContainer: {
+   //PALETTE COMPONENT STYLES
 
-    direction: "VERTICAL",
-    size: [ 1240 , 1560 ],
-    padding: [{ x: 104 }, { y: 174 }],
-    justifyContent: ["center"],
+const paletteComponent = {
+  styles: {
+    textNodeContainer: {
+      direction: "VERTICAL",
+      alignChildren: "CENTER",
+      backgroundType: "SOLID",
+      backgroundColor: [0, 0, 0],
+      opacity: 0,
+      xaxisSizing: "AUTO",
+      zaxisSizing: "AUTO",
+    },
+
+    colorBlock: {
+      width: 199,
+      height: 230,
+      cornerRadius: 8,
+    },
+
+    wrapPalette: {
+      padding: { top: 24, bottom: 24, left: 19, right: 19 },
+      cornerRadius: 14,
+      spacing: 24,
+      fillColor: { r: 0.898, g: 0.898, b: 0.898 },
+      strokeColor: { r: 0.7, g: 0.7, b: 0.7 },
+    },
+
+    colorGroupContainer: {
+      paddingY: 37,
+      paddingX: 4,
+      cornerRadius: 16,
+      spacingY: 73,
+      spacingZ: 34,
 
 
-    childContainer: {
-
-    direction: "VERTICAL",
-    size: [ 237 , 358 ],
-    padding: [{ x: 19 }, { y: 24 }],
-    justifyContent: ["center"],
-    borderRadius: 14,
+    },
   },
-
-    elementWrapper: {
-
-        direction: "VERTICAL",
-        size: [ 199 , 323 ],
-        gap: 24,
-        padding: [{ x: 0 }, { y: 0 }],
-        justifyContent: ["center"],
-
-    }
-  },
+} as const;
 
 
 
+ 
 
-} as const
-// Calls to "parent.postMessage" from within the HTML page will trigger this
-// callback. The callback will be passed the "pluginMessage" property of the
-// posted message.
-figma.ui.onmessage = async (msg: {setHexValue: string, setNameText: string}) => {
-  // One way of distinguishing between different types of messages sent from
-  // your HTML page is to use an object with a "type" property like this.
-    ////////////////////////////////////////
-    let hexText
-    let colorName
-    const getTextStyle = async () => {
+figma.ui.onmessage = async (
+  msg: { setHexValue: string; setNameText: string; colorPaletteObjects: any[] }
+) => {
 
-      await figma.loadFontAsync({family: "Inter", style: "Regular"})
+  const { styles } = paletteComponent;
+  const containerStyles = styles.textNodeContainer;
+/////////////////////////////////////////////////////////////
+    // const masterFrame = figma.createFrame();
+    // masterFrame.layoutMode = "HORIZONTAL";
+    // masterFrame.layoutWrap = "WRAP";
+    // masterFrame.resize(2133, 1671);
+    // masterFrame.fills = [
+    //   { type: "SOLID", color: { r: 0.85, g: 0.85, b: 0.85 } },
+    // ];
 
+    // masterFrame.paddingTop = 213;
+    // masterFrame.paddingBottom = 205;
+    // masterFrame.paddingLeft = 139;
+    // masterFrame.paddingRight = 1139;
+//////////////////////////////////////////////////////////||||||||
+    //Colorblock wrapper
+    const colorGroupContainer = figma.createFrame();
+    colorGroupContainer.layoutMode = "HORIZONTAL";
+    colorGroupContainer.primaryAxisSizingMode = "AUTO";
+    colorGroupContainer.counterAxisSizingMode = "AUTO";
+    colorGroupContainer.maxWidth = 1524;
+    colorGroupContainer.layoutWrap = "WRAP"
+    colorGroupContainer.counterAxisSpacing = styles.colorGroupContainer.spacingZ
+    colorGroupContainer.itemSpacing = styles.colorGroupContainer.spacingY
+    colorGroupContainer.paddingTop = styles.colorGroupContainer.paddingY;
+    colorGroupContainer.paddingBottom = styles.colorGroupContainer.paddingY;
+    colorGroupContainer.paddingLeft = styles.colorGroupContainer.paddingX;
+    colorGroupContainer.paddingRight = styles.colorGroupContainer.paddingX;
+    colorGroupContainer.primaryAxisAlignItems = "CENTER";
 
-       hexText = await figma.createText();
-       hexText.characters = msg.setHexValue;
-       hexText.fontSize = 24;
-       hexText.fills = [{type: "SOLID", color: {r: 0, g: 0, b: 0}, opacity: 0.5}]
-
-       colorName = await figma.createText()
-       colorName.characters = msg.setNameText;
-       colorName.fontSize = 16;
-      
-       return [hexText, colorName]
-    }
-   
-//HEX TEXT Nodes
-[hexText, colorName] = await getTextStyle()
-const textNodeContainer = figma.createFrame();
-textNodeContainer.layoutMode = "VERTICAL";
-textNodeContainer.counterAxisAlignItems = 'CENTER';
-
-
-textNodeContainer.primaryAxisSizingMode = "AUTO";       
-textNodeContainer.counterAxisSizingMode = "AUTO";
-textNodeContainer.fills = [{type: "SOLID", color: {r: 0, g: 0, b: 0}, opacity: 0}]
-textNodeContainer.appendChild(hexText)
-textNodeContainer.appendChild(colorName)
-///////////////////////////////////////////
-//Color Pallete
-const colorNlock = figma.createRectangle();
-colorNlock.resize(199, 230);
-colorNlock.cornerRadius = 8;
-colorNlock.fills = [{type: "SOLID", color: hexToFigmaRGB(msg.setHexValue)}]
-///////////////////////////////////////////////
-///Color BLOCK AND TEXT NODES JOINED TOGETHER
-
-const wrapPalette = figma.createFrame();
-wrapPalette.layoutMode = "VERTICAL";
-wrapPalette.primaryAxisSizingMode = "AUTO";          // HUG vertically
-wrapPalette.counterAxisSizingMode = "AUTO";          // HUG horizontally
-wrapPalette.appendChild(colorNlock)
-wrapPalette.appendChild(textNodeContainer)
-wrapPalette.paddingTop = 24;
-wrapPalette.paddingBottom = 24;
-wrapPalette.paddingLeft = 19;
-wrapPalette.paddingRight = 19;
-wrapPalette.cornerRadius = 14;
-wrapPalette.itemSpacing = 24;
-wrapPalette.fills = [{type: "SOLID", color: ({r: 0.898, g: 0.898, b: 0.898})}]
-wrapPalette.strokes = [{type: "SOLID", color: {r: 0.7, g: 0.7, b: 0.7}}]
-wrapPalette.strokeWeight = 0.8;
-wrapPalette.effects =  [{type: "DROP_SHADOW",
-                         color: { r: 0.804, g: 0.788, b: 0.788, a: 0.25 },
-                         offset: { x: 0, y: 4 },   
-                         radius: 4,               
-                         visible: true,
-                         spread: 0,
-                         blendMode: "NORMAL"  }]
+    colorGroupContainer.cornerRadius =
+      styles.colorGroupContainer.cornerRadius;
 
 
+    colorGroupContainer.fills = [
+      { type: "SOLID", color: { r: 0.850, g: 0.850, b: 0.850 }, opacity: 1 },
+    ];
 
-  figma.closePlugin();
+
+///////////////////////////////////////////////////////////////
+
+
+   //  looping through colorPaletteObject
+ 
+  for (const item of msg.colorPaletteObjects) {
+    setTimeout(()=>{
+      console.log("1")
+    },1000)
+    await figma.loadFontAsync({ family: "Inter", style: "Regular" });
+    setTimeout(()=>{
+
+          const hexText = figma.createText();
+    hexText.characters = item.hexCode;
+    hexText.fontSize = 24;
+    hexText.fills = [
+      { type: "SOLID", color: { r: 0, g: 0, b: 0 }, opacity: 0.5 },
+    ];
+
+    const nameText = figma.createText();
+    nameText.characters = item.hexName || "";
+    nameText.fontSize = 16;
+
+    
+    // Text node container styles
+  
+    const textNodeContainer = figma.createFrame();
+    textNodeContainer.layoutMode = containerStyles.direction;
+    textNodeContainer.counterAxisAlignItems = containerStyles.alignChildren;
+
+    textNodeContainer.primaryAxisSizingMode = containerStyles.xaxisSizing;
+    textNodeContainer.counterAxisSizingMode = containerStyles.zaxisSizing;
+
+    textNodeContainer.fills = [
+      {
+        type: containerStyles.backgroundType,
+        color: {
+          r: containerStyles.backgroundColor[0],
+          g: containerStyles.backgroundColor[1],
+          b: containerStyles.backgroundColor[2],
+        },
+        opacity: containerStyles.opacity,
+      },
+    ];
+
+    textNodeContainer.appendChild(hexText);
+    textNodeContainer.appendChild(nameText);
+
+    
+       // color block style
+    
+    const colorBlock = figma.createRectangle();
+    colorBlock.resize(styles.colorBlock.width, styles.colorBlock.height);
+    colorBlock.cornerRadius = styles.colorBlock.cornerRadius;
+    colorBlock.fills = [
+      { type: "SOLID", color: hexToFigmaRGB(item.hexCode) },
+    ];
+
+    
+    //Wrapped Palete (big card)
+    
+    const wrapPalette = figma.createFrame();
+    wrapPalette.layoutMode = "VERTICAL";
+    wrapPalette.primaryAxisSizingMode = "AUTO";
+    wrapPalette.counterAxisSizingMode = "AUTO";
+
+    wrapPalette.paddingTop = styles.wrapPalette.padding.top;
+    wrapPalette.paddingBottom = styles.wrapPalette.padding.bottom;
+    wrapPalette.paddingLeft = styles.wrapPalette.padding.left;
+    wrapPalette.paddingRight = styles.wrapPalette.padding.right;
+    wrapPalette.itemSpacing = styles.wrapPalette.spacing;
+    wrapPalette.cornerRadius = styles.wrapPalette.cornerRadius;
+
+    wrapPalette.fills = [
+      {
+        type: "SOLID",
+        color: styles.wrapPalette.fillColor,
+      },
+    ];
+    wrapPalette.strokes = [
+      { type: "SOLID", color: styles.wrapPalette.strokeColor },
+    ];
+    wrapPalette.strokeWeight = 0.8;
+
+    wrapPalette.effects = [
+      {
+        type: "DROP_SHADOW",
+        color: { r: 0.804, g: 0.788, b: 0.788, a: 0.25 },
+        offset: { x: 0, y: 4 },
+        radius: 4,
+        visible: true,
+        spread: 0,
+        blendMode: "NORMAL",
+      },
+    ];
+
+    wrapPalette.primaryAxisAlignItems = "CENTER";
+
+    wrapPalette.appendChild(colorBlock);
+    wrapPalette.appendChild(textNodeContainer);
+    colorGroupContainer.appendChild(wrapPalette);
+
+
+
+    },2500)
+
+  }
+
 };
 
 
 
+//color parser
+
 function hexToFigmaRGB(hex: string) {
-  hex = hex.replace('#', '');
-
-  // Support shorthand (#RGB)
+  hex = hex.replace("#", "");
   if (hex.length === 3) {
-    hex = hex.split('').map(ch => ch + ch).join('');
+    hex = hex
+      .split("")
+      .map((ch) => ch + ch)
+      .join("");
   }
-
   const num = parseInt(hex, 16);
-
   return {
     r: ((num >> 16) & 255) / 255,
     g: ((num >> 8) & 255) / 255,
-    b: (num & 255) / 255
+    b: (num & 255) / 255,
   };
 }
-
-

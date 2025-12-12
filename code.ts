@@ -38,9 +38,13 @@ const paletteComponent = {
     },
 
     colorGroupContainer: {
-      padding: 4,
-      cornerRadius: 4,
-      spacing: 73,
+      paddingY: 37,
+      paddingX: 4,
+      cornerRadius: 16,
+      spacingY: 73,
+      spacingZ: 34,
+
+
     },
   },
 } as const;
@@ -52,12 +56,50 @@ const paletteComponent = {
 figma.ui.onmessage = async (
   msg: { setHexValue: string; setNameText: string; colorPaletteObjects: any[] }
 ) => {
-  console.log(msg.colorPaletteObjects);
 
   const { styles } = paletteComponent;
   const containerStyles = styles.textNodeContainer;
+/////////////////////////////////////////////////////////////
+    // const masterFrame = figma.createFrame();
+    // masterFrame.layoutMode = "HORIZONTAL";
+    // masterFrame.layoutWrap = "WRAP";
+    // masterFrame.resize(2133, 1671);
+    // masterFrame.fills = [
+    //   { type: "SOLID", color: { r: 0.85, g: 0.85, b: 0.85 } },
+    // ];
 
-  
+    // masterFrame.paddingTop = 213;
+    // masterFrame.paddingBottom = 205;
+    // masterFrame.paddingLeft = 139;
+    // masterFrame.paddingRight = 1139;
+//////////////////////////////////////////////////////////||||||||
+    //Colorblock wrapper
+    const colorGroupContainer = figma.createFrame();
+    colorGroupContainer.layoutMode = "HORIZONTAL";
+    colorGroupContainer.primaryAxisSizingMode = "AUTO";
+    colorGroupContainer.counterAxisSizingMode = "AUTO";
+    colorGroupContainer.maxWidth = 1524;
+    colorGroupContainer.layoutWrap = "WRAP"
+    colorGroupContainer.counterAxisSpacing = styles.colorGroupContainer.spacingZ
+    colorGroupContainer.itemSpacing = styles.colorGroupContainer.spacingY
+    colorGroupContainer.paddingTop = styles.colorGroupContainer.paddingY;
+    colorGroupContainer.paddingBottom = styles.colorGroupContainer.paddingY;
+    colorGroupContainer.paddingLeft = styles.colorGroupContainer.paddingX;
+    colorGroupContainer.paddingRight = styles.colorGroupContainer.paddingX;
+    colorGroupContainer.primaryAxisAlignItems = "CENTER";
+
+    colorGroupContainer.cornerRadius =
+      styles.colorGroupContainer.cornerRadius;
+
+
+    colorGroupContainer.fills = [
+      { type: "SOLID", color: { r: 0.850, g: 0.850, b: 0.850 }, opacity: 1 },
+    ];
+
+
+///////////////////////////////////////////////////////////////
+
+
    //  looping through colorPaletteObject
  
   for (const item of msg.colorPaletteObjects) {
@@ -65,8 +107,9 @@ figma.ui.onmessage = async (
       console.log("1")
     },1000)
     await figma.loadFontAsync({ family: "Inter", style: "Regular" });
+    setTimeout(()=>{
 
-    const hexText = figma.createText();
+          const hexText = figma.createText();
     hexText.characters = item.hexCode;
     hexText.fontSize = 24;
     hexText.fills = [
@@ -154,54 +197,14 @@ figma.ui.onmessage = async (
 
     wrapPalette.appendChild(colorBlock);
     wrapPalette.appendChild(textNodeContainer);
-
-  
-    // Color group container
-  
-    const colorGroupContainer = figma.createFrame();
-    colorGroupContainer.layoutMode = "HORIZONTAL";
-    colorGroupContainer.primaryAxisSizingMode = "AUTO";
-    colorGroupContainer.counterAxisSizingMode = "AUTO";
-
-    colorGroupContainer.paddingTop = styles.colorGroupContainer.padding;
-    colorGroupContainer.paddingBottom = styles.colorGroupContainer.padding;
-    colorGroupContainer.paddingLeft = styles.colorGroupContainer.padding;
-    colorGroupContainer.paddingRight = styles.colorGroupContainer.padding;
-
-    colorGroupContainer.cornerRadius =
-      styles.colorGroupContainer.cornerRadius;
-
-    colorGroupContainer.itemSpacing = styles.colorGroupContainer.spacing;
-
-    colorGroupContainer.fills = [
-      { type: "SOLID", color: { r: 0, g: 0, b: 0 }, opacity: 0 },
-    ];
-
     colorGroupContainer.appendChild(wrapPalette);
 
-    
-    //Master frame
-    
-    const masterFrame = figma.createFrame();
-    masterFrame.layoutMode = "HORIZONTAL";
-    masterFrame.layoutWrap = "WRAP";
-    masterFrame.resize(2133, 1671);
-    masterFrame.fills = [
-      { type: "SOLID", color: { r: 0.85, g: 0.85, b: 0.85 } },
-    ];
 
-    masterFrame.paddingTop = 213;
-    masterFrame.paddingBottom = 205;
-    masterFrame.paddingLeft = 139;
-    masterFrame.paddingRight = 1139;
 
-    masterFrame.appendChild(colorGroupContainer);
+    },2500)
+
   }
 
-  // figma.closePlugin();
-  setTimeout(()=>{
-    figma.closePlugin()
-  }, 4000)
 };
 
 

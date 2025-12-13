@@ -1,12 +1,11 @@
 figma.showUI(__html__);
 figma.ui.resize(500, 700);
 
-async function getUserCollections() {
-  const userSetVaribles = await figma.variables.getLocalVariablesAsync();
-  console.log(userSetVaribles);
-  const { valuesByMode } = userSetVaribles[1];
-  console.log(valuesByMode);
-}
+// async function getUserCollections() {
+//   const userLocalStyles = await figma.getLocalPaintStylesAsync() //Future versions support
+//                                                                 //Getting localstyles
+//   return userLocalStyles;
+// }
 
 
    //PALETTE COMPONENT STYLES
@@ -60,6 +59,8 @@ figma.ui.onmessage = async (
 
   console.log(msg.optionHex, msg.optionName, msg.optionNone)
 
+
+
   const { styles } = paletteComponent;
   const containerStyles = styles.textNodeContainer;
 /////////////////////////////////////////////////////////////
@@ -108,6 +109,7 @@ figma.ui.onmessage = async (
   for (const item of msg.colorPaletteObjects) {
 
     await figma.loadFontAsync({ family: "Inter", style: "Regular" });
+
     setTimeout(()=>{
 
           const hexText = figma.createText();

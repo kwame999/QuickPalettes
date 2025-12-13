@@ -1,7 +1,7 @@
 <h2>Test</h2>
 <form action="">
   <div class="main-container">
-    <div class="div">
+    <div class="setHexNameValue">
 
       <label for="valueHexField">Hex#</label>
       <input type="text" name="valueHexField" id="hexField" size="4">
@@ -27,13 +27,15 @@
     </div>
 
     <div class="hex-to-be-paleted">
-      s
+      
 
     </div>
 
   </div>
 </form>
 <script>
+
+const hexContainer = document.querySelector('.hex-to-be-paleted')
 
 const inputField = document.getElementById('txtField');
 const btnInitiate = document.getElementById('btnIniate')
@@ -49,43 +51,7 @@ const optionIncludNone = document.getElementById('includeNone');
 const colorPaletteObjects = [];
 ///////////////////////
 
-btnInitiate.addEventListener("click", (e)=>{
-    e.preventDefault()
 
-  // const vairableName = inputField.value;
-  ///////
-
-    const hexValue =  hexValueField.value;
-    const nameValue = nameValueField.value;
-    const includeHex = optionIncludeHex;
-    const includeName = optionIncludeName;
-    const includeNone = optionIncludNone;
-  ///////
-
-    parent.postMessage({ pluginMessage: { 
-
-                                          setHexValue: hexValue, 
-                                          setNameText: nameValue,
-                                          colorPaletteObjects: colorPaletteObjects,
-                                          optionHex: includeHex.checked ? true : false,
-                                          optionName: includeName.checked ? true : false,
-                                          optionNone: includeNone.checked ? true : false,
-                                        
-                                        } }, '*')
-      
-
-})
-
-btnAdd.addEventListener("click", (e) => {
-  
-  e.preventDefault()
-
-                                                    ///Adds color to arrayList
-  colorPaletteArray()
-  console.log("test")
-
-  
-})
 
 
 function colorPaletteArray(){
@@ -93,20 +59,84 @@ function colorPaletteArray(){
   const hexValue =  hexValueField.value;
   const nameValue = nameValueField.value;
 
-  colorPaletteObjects.unshift(
+  colorPaletteObjects.unshift({
+                                hexCode: hexValue,
+                                hexName: nameValue ? nameValue : null,
+                                id: Date.now(), //track btn
 
-    {
+                              })
+ 
+ 
+  //Paletes to be created container visual
+  const currentAddedHex = document.createElement("div");
+  const currentAddedHexTitle = document.createElement("p");
+  const deleteBtn = document.createElement("button")
+  currentAddedHex.textContent = hexValueField.value;
+  deleteBtn.textContent = 'Delete'
+  deleteBtn.id = Date.now();
+  
 
-      hexCode: hexValue,
-      hexName: nameValue ? nameValue : null,
+  currentAddedHex.appendChild(currentAddedHexTitle);
+  currentAddedHex.appendChild(deleteBtn)
+  // const hexBlock = document.createElement("div")
+  currentAddedHexTitle.className = "hexBlock"
 
-    }
-  )
+// hexContainer.appendChild(currentAddedHex)
+  hexContainer.firstChild ? 
+  hexContainer.insertBefore(currentAddedHex, hexContainer.firstChild) : hexContainer.appendChild(currentAddedHex)
+
   hexValueField.value = ""
   nameValueField.value = ""
   return colorPaletteObjects
 
 }
 
+const testtesttest = document.querySelector(".main-container");
+
+testtesttest.addEventListener("click", (e)=>{
+  
+
+  if(e.target.id === "btnAdd"){
+
+    e.preventDefault()
+    colorPaletteArray() ///Adds color to arrayList
+    
+  }
+
+  if(e.target.id === "btnIniate"){
+
+      e.preventDefault()
+
+    const hexValue =  hexValueField.value;
+    const nameValue = nameValueField.value;
+    const includeHex = optionIncludeHex;
+    const includeName = optionIncludeName;
+    const includeNone = optionIncludNone;
+ 
+
+    parent.postMessage({ pluginMessage: { 
+
+                        setHexValue: hexValue, 
+                        setNameText: nameValue,
+                        colorPaletteObjects: colorPaletteObjects,
+                        optionHex: includeHex.checked ? true : false,
+                        optionName: includeName.checked ? true : false,
+                        optionNone: includeNone.checked ? true : false,
+                                        
+                                        } }, '*')
+
+  }
+
+  for(let i = 0; i < colorPaletteObjects.length; i++){
+
+      if(e.target.id == colorPaletteObjects[i].id){
+        e.preventDefault()
+        e.target.closest('div').remove()
+        colorPaletteObjects.splice(i,1)
+  }
+
+  }
+
+})
 
 </script>

@@ -221,7 +221,7 @@ figma.ui.onmessage = async (
 
   const safeName = (name?: string | null) => {
     const raw = (name && name.trim()) ? name.trim() : `untitled${idx++}`;
-    // make it CSS-variable friendly
+    // Sanitizing name string so its CSS friendly
     return raw
       .toLowerCase()
       .replace(/\s+/g, "-")
@@ -238,7 +238,7 @@ figma.ui.onmessage = async (
     cssVars.push(`--${n}-color: ${c.hexCode};`);
     scssVars.push(`$${n}-color: ${c.hexCode};`);
 
-    // For Tailwind style usage when you define --color-* as "R G B"
+ 
     tailwindRgbRefs.push(`'rgb(var(--color-${n}) / <alpha-value>)'`);
   }
 

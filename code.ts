@@ -1,5 +1,5 @@
 figma.showUI(__html__);
-figma.ui.resize(500, 700);
+figma.ui.resize(364, 674);
 
 // async function getUserCollections() {
 //   const userLocalStyles = await figma.getLocalPaintStylesAsync() //Future versions support
@@ -221,7 +221,6 @@ figma.ui.onmessage = async (
 
   const safeName = (name?: string | null) => {
     const raw = (name && name.trim()) ? name.trim() : `untitled${idx++}`;
-    // Sanitizing name string so its CSS friendly
     return raw
       .toLowerCase()
       .replace(/\s+/g, "-")
@@ -238,7 +237,6 @@ figma.ui.onmessage = async (
     cssVars.push(`--${n}-color: ${c.hexCode};`);
     scssVars.push(`$${n}-color: ${c.hexCode};`);
 
- 
     tailwindRgbRefs.push(`'rgb(var(--color-${n}) / <alpha-value>)'`);
   }
 

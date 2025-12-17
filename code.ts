@@ -1,5 +1,5 @@
 figma.showUI(__html__);
-figma.ui.resize(500, 700);
+figma.ui.resize(364, 674);
 
 // async function getUserCollections() {
 //   const userLocalStyles = await figma.getLocalPaintStylesAsync() //Future versions support

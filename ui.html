@@ -8,7 +8,7 @@
 
   }
   
-  :root
+  /* :root
   {
     --primary-color: #1b1c22;
     --primaryboarder-color: #3e3e53;
@@ -27,9 +27,9 @@
 
 
 
-  }
+  } */
 
-    :root[data-theme="light"]
+    :root
   {
     --primary-color: #FAFAFC;
     --primaryboarder-color: #858585;
@@ -39,7 +39,7 @@
     --txtsub-color: #636363;
     --dropdown-color: #D3D3D3;
     --dropdownboarder-color: #95959D;
-    --btnprimary-color: #0B0C12;
+    --btnprimary-color: #14161f;
     --icon-color: #FFFFFF;
     --container-color: #F1F1F1;
     --containerboarder-color: #89898E;
@@ -55,9 +55,10 @@
     background-color: var(--primary-color);
     display: flex;
     font-family: inter;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--txthead-color);
     border: none;
+    overflow: hidden;
     
   
     
@@ -106,7 +107,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: 1.8rem;
     align-items: center;
     
   }
@@ -117,7 +118,7 @@
     border: solid 1px var(--fieldsetboarder-color);
     padding: 4px;
     width: 100%;
-    height: 34px;
+    height: 30px;
     border-radius: 6px;
   }
 
@@ -140,7 +141,7 @@
   {
     display: flex;
     flex-direction: column;
-    gap: 1.14rem;
+    gap: 1rem;
   }
 
  
@@ -155,8 +156,12 @@
     margin-top: 4px;
     background-color: var(--container-color);
     border: var(--containerboarder-color) 1px solid;
-    height: 60%;
+    height: 30vh;
     border-radius: 10px;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: var(--containerboarder-color) transparent;
+    
   }
 
   .options-check
@@ -177,21 +182,70 @@
 
   button
   {
-    padding: .5rem;
+    padding: .4rem;
     background-color: var(--btnprimary-color);
     border: none;
     color: var(--icon-color);
     border-radius: 4px;
+        height: 30px;
+
   }
 
   label
   {
     font-weight: 480;
     font-size: .8rem;
-    margin-top: 8px;
+    margin-top: 10px;
     
   }
-  
+
+  .color-tab
+  {
+    display: flex;
+    background-color: var(--colortabbg-color);
+    justify-content: space-between;
+    border: solid 1px var(--colortabboarder-color);
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    padding: 5px 8px;
+    align-items: center;
+    font-size: small;
+  }
+
+  .toast-copy
+  {
+    display: flex;
+    background-color: var(--primary-color);
+    border: solid .4px #b8b5b5;
+    padding: .8rem;
+    font-size: .7rem;
+    border-radius: 5px;
+    align-items: center;
+    position: absolute;
+    filter: drop-shadow(2px 2px 4px #6e6e6e);
+    animation:  toastSlideUp 1s .1s forwards ;
+    bottom: -100px;
+  }
+
+  .toast-copy p
+  {
+    margin-left: 11px;
+    color: var(--btnprimary-color);
+    font-weight: 500;
+  }
+
+  .toast-copy p span
+  {
+    margin-left: 8px;
+    margin-right: 14px;
+    color: #95959D;
+  }
+
+  @keyframes toastSlideUp {
+    0% {opacity: .1;}
+    100% {bottom: 30px;}
+  }
 </style>
 
 
@@ -199,7 +253,7 @@
 <body>
   
 
-<aside class="side-nav">
+<!-- <aside class="side-nav">
       
 
 <svg width="48" height="48" viewBox="0 0 48 48" fill="none"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -251,7 +305,7 @@
     
   </nav>
 
-</aside>
+</aside> -->
 
 
 <form action="">
@@ -263,11 +317,11 @@
           
           <label for="valueHexField">Your hex code/number</label>
           
-          <div style="display: flex;">
+          <div style="display: flex; align-items: center;">
                 <input type="text" name="valueHexField" id="hexField" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: none;">
-                <button id="btnAdd" style="width: 25%; border: none;">
+                <button id="btnAdd" style="width: 25%; border: none; border-bottom-left-radius: 0; border-top-left-radius: 0;">
                   
-<svg width="20" height="20" style="padding: 0;"  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="18" height="18" style="padding: 0;"  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M6 12H12M12 12H18M12 12V18M12 12V6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 
@@ -313,8 +367,11 @@
 
   
 
- 
-    <p>Your colors</p>
+    <div style="display: flex; justify-content: space-between;">
+    <p>Palette</p>
+    <p class="count-palettes">[<span>0</span>]</p>
+    </div>
+   
     <div class="hex-to-be-paleted">
       
 
@@ -362,7 +419,36 @@
             </p>
            
           </div>
-      <button type="submit" id="btnIniate" style="font-weight: 700;">Create</button>
+        <div class="btnGroup" style="display: flex; flex-direction: column; gap: 4px;">
+          <div class="toast-copy">
+            
+            <svg width="18" height="18" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9.75 6L6.75 9L5.25 7.5M7.5 14.25C3.77208 14.25 0.75 11.2279 0.75 7.5C0.75 3.77208 3.77208 0.75 7.5 0.75C11.2279 0.75 14.25 3.77208 14.25 7.5C14.25 11.2279 11.2279 14.25 7.5 14.25Z" stroke="#4CB013" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+
+            <p>CSS copied to clipboard! <span style="text-decoration: underline;">view</span></p>
+
+            
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8.99998 8.99998L6.00001 6.00001M6.00001 6.00001L3 3M6.00001 6.00001L9.00002 3M6.00001 6.00001L3 9.00002" stroke="#5A5A5A" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+
+          </div>
+           <button type="submit" id="btnIniate" style="font-weight: 700; padding: 5px;">Create</button>
+            <button type="submit" id="btnExport" style="font-weight: 700; background-color: transparent; color: var(--btnprimary-color); ">
+              
+              <div style="display: flex; align-items: center; justify-content: center; gap: .8rem;">
+                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 6L12 3M12 3L15 6M12 3V13M7.00023 10C6.06835 10 5.60241 10 5.23486 10.1522C4.74481 10.3552 4.35523 10.7448 4.15224 11.2349C4 11.6024 4 12.0681 4 13V17.8C4 18.9201 4 19.4798 4.21799 19.9076C4.40973 20.2839 4.71547 20.5905 5.0918 20.7822C5.5192 21 6.07899 21 7.19691 21H16.8036C17.9215 21 18.4805 21 18.9079 20.7822C19.2842 20.5905 19.5905 20.2839 19.7822 19.9076C20 19.4802 20 18.921 20 17.8031V13C20 12.0681 19.9999 11.6024 19.8477 11.2349C19.6447 10.7448 19.2554 10.3552 18.7654 10.1522C18.3978 10 17.9319 10 17 10" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+
+              <p>Export local styles</p>
+              </div>
+              
+       
+              </button>
+        </div>
+     
 
     </div>
   </div>
@@ -406,15 +492,31 @@ function colorPaletteArray(){
  
   //Paletes to be created container visual
   const currentAddedHex = document.createElement("div");
+  currentAddedHex.classList.add('color-tab');
+  const colorBlock = document.createElement('div');
+  // colorBlock.textContent = 'dfsf'
+  const counter = document.querySelector(".count-palettes")
+  counter.textContent = `[${colorPaletteObjects.length}]`
+console.log(counter)
   const currentAddedHexTitle = document.createElement("p");
   const deleteBtn = document.createElement("button")
-  currentAddedHex.textContent = hexValueField.value;
-  deleteBtn.textContent = 'Delete'
+  currentAddedHexTitle.textContent = hexValueField.value;
+  colorBlock.style.backgroundColor = hexValueField.value;
+  colorBlock.style.padding = '5px'
+  colorBlock.style.borderRadius = "100%"
+  deleteBtn.innerHTML = `
+                        <svg width="18" height="18" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.16659 5.83333V9.91667M5.83325 5.83333V9.91667M3.49992 3.5V10.3833C3.49992 11.0367 3.49992 11.3632 3.62708 11.6128C3.73893 11.8323 3.91728 12.0111 4.1368 12.123C4.38612 12.25 4.71267 12.25 5.36478 12.25H8.63505C9.28717 12.25 9.61325 12.25 9.86257 12.123C10.0821 12.0111 10.261 11.8323 10.3729 11.6128C10.4999 11.3634 10.4999 11.0373 10.4999 10.3851V3.5M3.49992 3.5H4.66659M3.49992 3.5H2.33325M4.66659 3.5H9.33325M4.66659 3.5C4.66659 2.9564 4.66659 2.68474 4.75539 2.47034C4.8738 2.18447 5.10077 1.95722 5.38664 1.83881C5.60104 1.75 5.87299 1.75 6.41659 1.75H7.58325C8.12685 1.75 8.39865 1.75 8.61305 1.83881C8.89892 1.95722 9.12598 2.18447 9.24439 2.47034C9.33319 2.68474 9.33325 2.9564 9.33325 3.5M9.33325 3.5H10.4999M10.4999 3.5H11.6666" stroke="#D94B4B" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        `
   deleteBtn.id = Date.now();
-  
+  deleteBtn.style.backgroundColor = "transparent"
+  deleteBtn.style.marginLeft = "auto"
 
   currentAddedHex.appendChild(currentAddedHexTitle);
   currentAddedHex.appendChild(deleteBtn)
+  currentAddedHex.appendChild(colorBlock);
+                     
   // const hexBlock = document.createElement("div")
   currentAddedHexTitle.className = "hexBlock"
 
@@ -432,12 +534,11 @@ const testtesttest = document.querySelector(".main-container");
 
 testtesttest.addEventListener("click", (e)=>{
   console.log(e.target)
-
   if(e.target.id === "btnAdd"){
 
     e.preventDefault()
     colorPaletteArray() ///Adds color to arrayList
-
+    
   }
 
   if(e.target.id === "btnIniate"){

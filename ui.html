@@ -599,74 +599,53 @@
 
 
   function addColor() {
+
     const normalized = normalizeHex(hexValueField.value);
+    const hexValue = hexValueField.value;
+    const letters = hexValue.match(/[a-zA-Z]+/g);
+
     if (!hexValueField.value) {
       toastInfo(false, "Hex field is currently blank!")
       return
     }
     //
-      if (hexValueField.value.length >= 8) {
-      toastInfo(false, "Hex# is > 7")
+      if (hexValueField.value.length >= 8 || hexValueField.value.length < 3) {
+      toastInfo(false, "Hex# is > 7 or < 3")
       return
     }
 
-      const hexValueTempArray =  hexValueField.value.split("")
-      console.log(hexValueTempArray);
-      hexDigits = hexValueTempArray.map(n => Number(n)).filter(num => Number(num));
-      
- 
+     
+      if (!letters.every(l => l.match(/[a-fA-F]+/g))){
+        const btnAdd = document.getElementById("btnAdd");
+          btnAdd.style.backgroundColor = "#9C9DA2"
+          btnAdd.style.cursor = 'not-allowed'
 
-      function checktest(){
-        const hexLetterMap = ["A","B","C","D","E","F"];
-        
-        for(let i = 0; i < hexValueTempArray.length; i++){
-            const test = hexValueTempArray.includes(hexLetterMap[i])
-            // console.log(test)
-            if(test){
-              console.log("happy")
-            }
-        }
-        
-        //////////////////////////////////////////////////////////////
+          setTimeout(()=>{
 
+          btnAdd.style.backgroundColor = "var(--btnprimary-color)"
+          btnAdd.style.cursor = 'auto'
 
-          let text = "222c2";
-          let result = text.match(/[a-zA-Z]+/g);
-
-          console.log(result.every(e => e.match(/[a-fA-F]]+/g)))
+          }, 2000)
+          toastInfo("forbidden", "Error:Hex letters range A - F");
           
- //if(result){
- //document.getElementById("demo").innerHTML = result;
-
- //}
-
-
-
-
-
-
-
-
-        ///////////////////////////////////////////////////////////
-        
+          return
       }
-      checktest()
-      console.log(hexDigits)
-    document.querySelector('.toast-copy').style.display = 'none' //If toast is present, hide
-    const hexName = (nameValueField.value || "").trim();
-    const item = {
-      id: makeId(),
-      hexCode: normalized,
-      hexName: hexName || null,
-    };
-    
-    colorPaletteObjects.unshift(item);
-    renderPaletteItem(item);
-    hexValueField.value = "";
-    nameValueField.value = "";
 
-    updateCount();
-    return colorPaletteObjects;
+        
+      const hexName = (nameValueField.value || "").trim();
+      const item = {
+        id: makeId(),
+        hexCode: normalized,
+        hexName: hexName || null,
+      };
+    
+      colorPaletteObjects.unshift(item);
+      renderPaletteItem(item);
+      hexValueField.value = "";
+      nameValueField.value = "";
+
+      updateCount();
+      return colorPaletteObjects;
   }
 
 

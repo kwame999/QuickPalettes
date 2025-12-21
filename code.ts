@@ -1,7 +1,7 @@
 figma.showUI(__html__);
 figma.ui.resize(284, 674);
 
-// ---------- Types ----------
+// -- Types --
 type PaletteItem = {
   hexCode: string;
   hexName?: string | null;
@@ -23,7 +23,7 @@ type UIMessage =
       optionNone: boolean;
     };
 
-// ---------- Styles ----------
+// Styles 
 const paletteComponent = {
   styles: {
     textNodeContainer: {
@@ -53,7 +53,7 @@ const paletteComponent = {
   },
 } as const;
 
-// ---------- Main handler ----------
+// Main handler
 figma.ui.onmessage = async (msg: UIMessage) => {
   await figma.loadFontAsync({ family: "Inter", style: "Regular" });
 
@@ -82,7 +82,7 @@ figma.ui.onmessage = async (msg: UIMessage) => {
   figma.viewport.scrollAndZoomIntoView([container]);
 };
 
-// ---------- UI building ----------
+//UI building 
 function createColorGroupContainer() {
   const { styles } = paletteComponent;
 

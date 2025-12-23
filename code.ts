@@ -8,19 +8,31 @@ type PaletteItem = {
   id?: number;
 };
 
+type ExportOpts = {
+  cssVars: boolean;
+  scssVars: boolean;
+  tailwindRgbRefs: boolean;
+};
+
 type UIMessage =
   | {
+
       type: "create-from-ui";
       colorPaletteObjects: PaletteItem[];
       optionHex: boolean;
       optionName: boolean;
       optionNone: boolean;
+      exportOpts: ExportOpts;
+
     }
   | {
+
       type: "create-from-local-styles";
       optionHex: boolean;
       optionName: boolean;
       optionNone: boolean;
+      exportOpts: ExportOpts;
+
     };
 
 // Styles 
@@ -62,9 +74,6 @@ figma.ui.onmessage = async (msg: UIMessage) => {
       ? await getLocalStyleColors()
       : msg.colorPaletteObjects;
 
-  // exports
-  const exports = buildCssExports(colors);
-  console.log(exports);
 
   // build frames
   const container = createColorGroupContainer();
@@ -74,12 +83,21 @@ figma.ui.onmessage = async (msg: UIMessage) => {
       optionHex: msg.optionHex,
       optionName: msg.optionName,
       optionNone: msg.optionNone,
-    });
+    },);
     container.appendChild(card);
   }
-
+    
   figma.currentPage.appendChild(container);
   figma.viewport.scrollAndZoomIntoView([container]);
+  //exports
+  const built = buildCssExports(colors);
+  const selected = selectExports(built, msg.exportOpts);
+
+  // send back to UI to show in modal / toast
+  figma.ui.postMessage({
+    type: "exports-ready",
+    exports: selected,
+  });
 };
 
 //UI building 
@@ -112,7 +130,7 @@ function createColorGroupContainer() {
 
 function createPaletteCard(
   item: PaletteItem,
-  opts: { optionHex: boolean; optionName: boolean; optionNone: boolean }
+  opts: { optionHex: boolean; optionName: boolean; optionNone: boolean;  },
 ) {
   const { styles } = paletteComponent;
   const containerStyles = styles.textNodeContainer;
@@ -191,6 +209,18 @@ function createPaletteCard(
   return wrapPalette;
 }
 
+function selectExports(
+  built: { cssVars: string[]; scssVars: string[]; tailwindRgbRefs: string[] },
+  opts: ExportOpts
+) {
+  return {
+    cssVars: opts.cssVars ? built.cssVars : null,
+    scssVars: opts.scssVars ? built.scssVars : null,
+    tailwindRgbRefs: opts.tailwindRgbRefs ? built.tailwindRgbRefs : null,
+  };
+}
+
+
 // ---------- Exports ----------
 function buildCssExports(colors: Array<{ hexCode: string; hexName?: string | null }>) {
   let idx = 0;
@@ -204,6 +234,7 @@ function buildCssExports(colors: Array<{ hexCode: string; hexName?: string | nul
   const scssVars: string[] = [];
   const tailwindRgbRefs: string[] = [];
 
+  
   for (const c of colors) {
     const n = safeName(c.hexName);
     cssVars.push(`--${n}-color: ${c.hexCode};`);

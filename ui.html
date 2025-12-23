@@ -151,18 +151,19 @@
   }
 
 
-  .hex-to-be-paleted
+  .hex-to-be-paleted 
   {
     margin-top: 4px;
     background-color: var(--container-color);
     border: var(--containerboarder-color) 1px solid;
     height: 30vh;
     border-radius: 10px;
-    overflow-y: scroll;
+    overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--containerboarder-color) transparent;
     cursor: not-allowed;
-    
+    scroll-margin: 0;
+    scroll-padding: 0;
   }
 
   .options-check
@@ -326,18 +327,85 @@
     scrollbar-color: transparent transparent;
     scrollbar-width: thin;
   }
-
+  
   @keyframes toastSlideUp {
     0% {opacity: .1;}
     100% {bottom: 30px;}
   }
-</style>
 
+  @keyframes coverLogoSlideUp {
+    0% {}
+    100%{transform: translateY(-200pc);}
+  }
+
+  .cover
+  {
+    background-color: var(--primary-color);
+    width: 100%;
+    position: absolute;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: coverLogoSlideUp 8s 1.4s forwards ;
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  .cover img
+  {
+    width: 90px;
+  }
+
+  /*///////////////////////////////////////////*/
+  .loader {
+  width: 40px;
+  height: 20px;
+  --c:no-repeat radial-gradient(farthest-side,#000 93%,#0000);
+  background:
+    var(--c) 0    0,
+    var(--c) 50%  0,
+    var(--c) 100% 0;
+  background-size: 8px 8px;
+  position: relative;
+  animation: l4-0 1s linear infinite alternate;
+}
+.loader:before {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 12px;
+  background: #000;
+  left: 0;
+  top: 0;
+  animation: 
+    l4-1 1s  linear infinite alternate,
+    l4-2 0.5s cubic-bezier(0,200,.8,200) infinite;
+}
+@keyframes l4-0 {
+  0%      {background-position: 0  100%,50% 0   ,100% 0}
+  8%,42%  {background-position: 0  0   ,50% 0   ,100% 0}
+  50%     {background-position: 0  0   ,50% 100%,100% 0}
+  58%,92% {background-position: 0  0   ,50% 0   ,100% 0}
+  100%    {background-position: 0  0   ,50% 0   ,100% 100%}
+}
+@keyframes l4-1 {
+  100% {left:calc(100% - 8px)}
+}
+@keyframes l4-2 {
+  100% {top:-0.1px}
+}
+
+</style>
 
 
 <body>
   
+<div class="cover"><img src="data:image/png;base64,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" alt="">
 
+<div class="loader"></div>
+
+</div>
 <!-- <aside class="side-nav">
       
 
@@ -391,6 +459,7 @@
   </nav>
 
 </aside> -->
+
 
 
 <form action="">
@@ -461,6 +530,7 @@
       
 
     </div>
+    <p style=" width:fit-content;  margin-left: auto ;  font-size: 11px;">clear</p>
    <div class="options-check">
 
 
@@ -527,7 +597,7 @@
   </div>
 </form>
 
-<div class="back-drop" style="background: rgba(0, 0, 0, 0.2); display: block; width: 100%; position: absolute; 
+<div class="back-drop" style="background: rgba(0, 0, 0, 0.2); display: none; width: 100%; position: absolute; 
 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 backdrop-filter: blur(2px);
 -webkit-backdrop-filter: blur(2px);
@@ -535,7 +605,7 @@ border: 1px solid rgba(14, 12, 12, 0.726);
     height: 100vh;
 "></div>
 
-  <div class="code-view" style="display: block">
+  <div class="code-view" style="display: none">
 
         <div class="main-tab" style="padding-right: 0px;">
 
@@ -551,8 +621,8 @@ border: 1px solid rgba(14, 12, 12, 0.726);
           </button>
 
         </div>
-        <div class="main-view" contenteditable="true" style="overflow-y: scroll; ">
-          <div class="div" contenteditable="false" style="position: relative;">
+
+         <div class="div" contenteditable="false" style="position: relative;">
 
             <button class="btnCopy" id="btnCopied" style="margin-left: 170px; position: fixed; left: 30px; bottom: 40px; background-color: var(--btnprimary-color); border-radius: 100%;">
             
@@ -570,7 +640,8 @@ border: 1px solid rgba(14, 12, 12, 0.726);
           </button>
 
           </div>  
-          ss
+        <div class="main-view" contenteditable="true" style="overflow-y: scroll;">
+         
         </div>
   </div>
 
@@ -619,22 +690,22 @@ border: 1px solid rgba(14, 12, 12, 0.726);
   // 
 
   function normalizeHex(input) {
-    const raw = (input || "").trim();
-    if (!raw) return null;
 
-    // allow "323232" or "#323232" or "fff"
-    const withHash = raw.startsWith("#") ? raw : "#" + raw;
-    const hex = withHash.toUpperCase();
+  const raw = (input ?? "").trim();
+  if (!raw) return null;
 
-    // #RGB or #RRGGBB
-    if (/^#[0-9A-F]{3}$/.test(hex) || /^#[0-9A-F]{6}$/.test(hex)) return hex;
-    return null;
+  // add # if missing
+  const hex = (raw.startsWith("#") ? raw : `#${raw}`).toUpperCase();
+
+  // validate: either #RGB or #RRGGBB
+  const HEX_REGEX = /^#([0-9A-F]{3}|[0-9A-F]{6})$/;
+  return HEX_REGEX.test(hex) ? hex : null;
+
   }
 ////////////////////////////////////////////////////////////////////////
   function updateCount() {
     if (countSpan) countSpan.textContent = String(colorPaletteObjects.length);
   }
-
 
   function makeId() {
 
@@ -690,22 +761,10 @@ border: 1px solid rgba(14, 12, 12, 0.726);
   function addColor() {
 
     const normalized = normalizeHex(hexValueField.value);
-    const hexValue = hexValueField.value;
-    const letters = hexValue.match(/[a-zA-Z]+/g);
+    const value = hexValueField.value
 
-    if (!hexValueField.value) {
-      toastInfo(false, "Hex field is currently blank!")
-      return
-    }
-    //
-      if (hexValueField.value.length >= 8 || hexValueField.value.length < 3) {
-      toastInfo(false, "Hex# is > 7 or < 3")
-      return
-    }
-
-     
-      if (!letters?.every(l => l.match(/[a-fA-F]+/g))){
-        const btnAdd = document.getElementById("btnAdd");
+      if (!normalized){
+          const btnAdd = document.getElementById("btnAdd");
           btnAdd.style.backgroundColor = "#9C9DA2"
           btnAdd.style.cursor = 'not-allowed'
 
@@ -715,21 +774,11 @@ border: 1px solid rgba(14, 12, 12, 0.726);
           btnAdd.style.cursor = 'auto'
 
           }, 2000)
-          toastInfo("forbidden", "Error:Hex letters range A - F");
+          toastInfo("forbidden", "Invalid hex. Use RGB or RRGGBB format.");
           
           return
       }
 
-
-              const hexValueTempArray =  hexValueField.value.split("")
-              hexDigits = hexValueTempArray.map(n => Number(n)).filter(num => Number(num));
-              console.log(hexDigits.every(numb => numb < 10))
-
-
-
-
-    
-       /////////////////////////////////////////////////////////////////////// 
       const hexName = (nameValueField.value || "").trim();
       const item = {
         id: makeId(),
@@ -772,6 +821,8 @@ border: 1px solid rgba(14, 12, 12, 0.726);
 
   function postCreate() {
   const { optionHex, optionName, optionNone } = getPaletteStylingOptions();
+  const exportOpts = optionCSSExports();
+
 
   if (!colorPaletteObjects || colorPaletteObjects.length === 0) {
     toastInfo("forbidden", "Add at least 1 color first.");
@@ -786,12 +837,14 @@ border: 1px solid rgba(14, 12, 12, 0.726);
         optionHex,
         optionName,
         optionNone,
-
-        cssExport: (cssExportSelect?.value || "none").toLowerCase(),
+        exportOpts,
+        // cssExport: optionCSSExports(),
+        
       },
     },
     "*"
   );
+
 }
 
 
@@ -866,9 +919,6 @@ border: 1px solid rgba(14, 12, 12, 0.726);
   }
 
 
-
-
-
   // Events 
   root.addEventListener("click", (e) => {
     const target = e.target.closest("button");
@@ -884,6 +934,7 @@ border: 1px solid rgba(14, 12, 12, 0.726);
     if (target.id === "btnIniate" || target.id === "btnInitiate") {
       e.preventDefault();
       postCreate();
+      console.log(optionCSSExports())
       return;
     }
 
@@ -898,24 +949,25 @@ border: 1px solid rgba(14, 12, 12, 0.726);
 
 
   modalCopyWrapper.addEventListener("click", (e)=> {
-    const successMsg = toastInfo(true, "Copied to clipboard")
 
+    let successMsg
+    
     if(e.target.closest(".btnClose") ){
        
       modalCopyWrapper.style.display = 'none'
       document.querySelector('.back-drop').style.display = 'none'
-      if(successMsg) successMsg.style.display = 'none'
+      document.querySelector(".toast-copy").style.display = 'none'
     }
 
     if(e.target.closest(".btnCopy")){
 
+      successMsg = toastInfo(true, "Copied to clipboard")
       successMsg.style.position = "absolute"
       successMsg.style.display = 'flex'
       successMsg.style.zIndex = 1;
       console.log("will copy")
     }
   })
-  // allow Enter in the hex field to add
   hexValueField.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -924,6 +976,87 @@ border: 1px solid rgba(14, 12, 12, 0.726);
     }
   });
 
+
+  window.onmessage = (event) => {
+  const msg = event.data.pluginMessage;
+  if (!msg) return;
+
+  if (msg.type === "exports-ready") {
+    handleExportsReady(msg.exports);
+  }
+};
+
+
   updateCount();
+
+
+
+
+  function optionCSSExports(){
+    
+    const v = (cssExportSelect.value || "none").toLowerCase();
+
+    if (v === "vanilla") return { cssVars: true, scssVars: false, tailwindRgbRefs: false };
+    if (v === "sass") return { cssVars: false, scssVars: true, tailwindRgbRefs: false };
+    if (v === "tailwind") return { cssVars: false, scssVars: false, tailwindRgbRefs: true };
+    if (v === "all") return { cssVars: true, scssVars: true, tailwindRgbRefs: true };
+    switch(v){
+      case "vanilla":
+        console.log("test")
+    }
+    return {cssVars: false, scssVars: false, tailwindRgbRefs: false}
+  }
+
+
+  function handleExportsReady(exports) {
+
+  // picking which export to show based on dropdown
+  const v = (cssExportSelect.value || "none").toLowerCase();
+
+  let text = "";
+
+  if (v === "vanilla" && exports.cssVars) {
+    text = exports.cssVars.join("\n");
+  }
+
+  if (v === "sass" && exports.scssVars) {
+    text = exports.scssVars.join("\n");
+  }
+
+  if (v === "tailwind" && exports.tailwindRgbRefs) {
+    text = exports.tailwindRgbRefs.join(",\n");
+  }
+
+  if(v === "none"){
+    return
+  }
+
+  if (v === "all") {
+    text = [
+      "/* CSS */",
+      ...(exports.cssVars || []),
+      "",
+      "/* SCSS */",
+      ...(exports.scssVars || []),
+      "",
+      "/* Tailwind */",
+      ...(exports.tailwindRgbRefs || []),
+    ].join("\n");
+  }
+
+  // inject into modal
+  const view = document.querySelector(".main-view");
+  view.textContent = text;
+
+  // show modal + backdrop
+  document.querySelector(".code-view").style.display = "block";
+  document.querySelector(".back-drop").style.display = "block";
+}
+
+
+
+
+
+
 </script>
 

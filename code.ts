@@ -1,5 +1,5 @@
 figma.showUI(__html__);
-figma.ui.resize(284, 674);
+figma.ui.resize(260, 620);
 
 // -- Types --
 type PaletteItem = {
@@ -73,7 +73,7 @@ figma.ui.onmessage = async (msg: UIMessage) => {
     msg.type === "create-from-local-styles"
       ? await getLocalStyleColors()
       : msg.colorPaletteObjects;
-
+  
 
   // build frames
   const container = createColorGroupContainer();
@@ -97,6 +97,14 @@ figma.ui.onmessage = async (msg: UIMessage) => {
   figma.ui.postMessage({
     type: "exports-ready",
     exports: selected,
+  });
+
+  // send localStyles
+
+  const getlocals = await getLocalStyleColors()
+    figma.ui.postMessage({
+    type: "localStyles-ready",
+    local: getlocals,
   });
 };
 
@@ -255,10 +263,13 @@ async function getLocalStyleColors(): Promise<PaletteItem[]> {
     if (!paint || paint.type !== "SOLID") continue;
 
     const { r, g, b } = paint.color;
-    out.push({
+    out.unshift({
+      // id: Date.now(),
       hexCode: figmaRGBToHex(r, g, b),
       hexName: s.name,
     });
+
+    // console.log(out)
   }
 
   return out;

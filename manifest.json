@@ -2,7 +2,7 @@
   "name": "figmas",
   "id": "1580144370803697009",
   "api": "1.0.0",
-  "main": "code.js",
+  "main": "dist/code.js",
   "capabilities": [],
   "enableProposedApi": false,
   "documentAccess": "dynamic-page",

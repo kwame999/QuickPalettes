@@ -9,6 +9,7 @@ type ExportOpts = {
   cssVars: boolean;
   scssVars: boolean;
   tailwindRgbRefs: boolean;
+  tailwindv4Vars: boolean
 };
 
 type UIMessage =

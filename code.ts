@@ -69,44 +69,43 @@ const paletteComponent = {
 figma.ui.onmessage = async (msg: UIMessage) => {
   await figma.loadFontAsync({ family: "Inter", style: "Regular" });
 
-  const colors =
-    msg.type === "create-from-local-styles"
-      ? await getLocalStyleColors()
-      : msg.colorPaletteObjects;
-  
+  switch (msg.type) {
+    case "create-from-ui": {
+      const colors = msg.colorPaletteObjects;
 
-  // build frames
-  const container = createColorGroupContainer();
+      // build exports
+      const built = buildCssExports(colors);
+      const selected = selectExports(built, msg.exportOpts);
 
-  for (const item of colors) {
-    const card = createPaletteCard(item, {
-      optionHex: msg.optionHex,
-      optionName: msg.optionName,
-      optionNone: msg.optionNone,
-    },);
-    container.appendChild(card);
+      // send back to UI (modal)
+      figma.ui.postMessage({ type: "exports-ready", exports: selected });
+
+      // build frames
+      const container = createColorGroupContainer();
+      for (const item of colors) {
+        const card = createPaletteCard(item, {
+          optionHex: msg.optionHex,
+          optionName: msg.optionName,
+          optionNone: msg.optionNone,
+        });
+        container.appendChild(card);
+      }
+
+      figma.currentPage.appendChild(container);
+      figma.viewport.scrollAndZoomIntoView([container]);
+      return;
+    }
+
+    case "create-from-local-styles": {
+      const locals = await getLocalStyleColors();
+
+      //  send locals back 
+      figma.ui.postMessage({ type: "localStyles-ready", local: locals });
+      return;
+    }
   }
-    
-  figma.currentPage.appendChild(container);
-  figma.viewport.scrollAndZoomIntoView([container]);
-  //exports
-  const built = buildCssExports(colors);
-  const selected = selectExports(built, msg.exportOpts);
-
-  // send back to UI to show in modal / toast
-  figma.ui.postMessage({
-    type: "exports-ready",
-    exports: selected,
-  });
-
-  // send localStyles
-
-  const getlocals = await getLocalStyleColors()
-    figma.ui.postMessage({
-    type: "localStyles-ready",
-    local: getlocals,
-  });
 };
+
 
 //UI building 
 function createColorGroupContainer() {
@@ -264,7 +263,7 @@ async function getLocalStyleColors(): Promise<PaletteItem[]> {
 
     const { r, g, b } = paint.color;
     out.unshift({
-      // id: Date.now(),
+      id: undefined,
       hexCode: figmaRGBToHex(r, g, b),
       hexName: s.name,
     });

@@ -1,69 +1,12 @@
+import { hexToFigmaRGB, figmaRGBToHex } from "./color-utils-module"
+import { paletteComponent } from "./palette-component-styling";
+import { buildCssExports } from "./css-export-build"
+import { PaletteItem, ExportOpts, UIMessage } from "./types";
+
+
 figma.showUI(__html__);
 figma.ui.resize(260, 620);
 
-// -- Types --
-type PaletteItem = {
-  hexCode: string;
-  hexName?: string | null;
-  id?: number;
-};
-
-type ExportOpts = {
-  cssVars: boolean;
-  scssVars: boolean;
-  tailwindRgbRefs: boolean;
-};
-
-type UIMessage =
-  | {
-
-      type: "create-from-ui";
-      colorPaletteObjects: PaletteItem[];
-      optionHex: boolean;
-      optionName: boolean;
-      optionNone: boolean;
-      exportOpts: ExportOpts;
-
-    }
-  | {
-
-      type: "create-from-local-styles";
-      optionHex: boolean;
-      optionName: boolean;
-      optionNone: boolean;
-      exportOpts: ExportOpts;
-
-    };
-
-// Styles 
-const paletteComponent = {
-  styles: {
-    textNodeContainer: {
-      direction: "VERTICAL",
-      alignChildren: "CENTER",
-      backgroundType: "SOLID",
-      backgroundColor: [0, 0, 0] as const,
-      opacity: 0,
-      xaxisSizing: "AUTO",
-      zaxisSizing: "AUTO",
-    },
-    colorBlock: { width: 199, height: 230, cornerRadius: 8 },
-    wrapPalette: {
-      padding: { top: 24, bottom: 24, left: 19, right: 19 },
-      cornerRadius: 14,
-      spacing: 24,
-      fillColor: { r: 0.898, g: 0.898, b: 0.898 },
-      strokeColor: { r: 0.7, g: 0.7, b: 0.7 },
-    },
-    colorGroupContainer: {
-      paddingY: 37,
-      paddingX: 4,
-      cornerRadius: 16,
-      spacingY: 73,
-      spacingZ: 34,
-    },
-  },
-} as const;
 
 // Main handler
 figma.ui.onmessage = async (msg: UIMessage) => {
@@ -215,7 +158,7 @@ function createPaletteCard(
 
   return wrapPalette;
 }
-
+//////////////////////////////////////
 function selectExports(
   built: { cssVars: string[]; scssVars: string[]; tailwindRgbRefs: string[] },
   opts: ExportOpts
@@ -227,30 +170,6 @@ function selectExports(
   };
 }
 
-
-// ---------- Exports ----------
-function buildCssExports(colors: Array<{ hexCode: string; hexName?: string | null }>) {
-  let idx = 0;
-
-  const safeName = (name?: string | null) => {
-    const raw = (name && name.trim()) ? name.trim() : `untitled${idx++}`;
-    return raw.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-_]/g, "");
-  };
-
-  const cssVars: string[] = [];
-  const scssVars: string[] = [];
-  const tailwindRgbRefs: string[] = [];
-
-  
-  for (const c of colors) {
-    const n = safeName(c.hexName);
-    cssVars.push(`--${n}-color: ${c.hexCode};`);
-    scssVars.push(`$${n}-color: ${c.hexCode};`);
-    tailwindRgbRefs.push(`'rgb(var(--color-${n}) / <alpha-value>)'`);
-  }
-
-  return { cssVars, scssVars, tailwindRgbRefs };
-}
 
 // ---------- Local styles ----------
 async function getLocalStyleColors(): Promise<PaletteItem[]> {
@@ -274,20 +193,3 @@ async function getLocalStyleColors(): Promise<PaletteItem[]> {
   return out;
 }
 
-// ---------- Color utils ----------
-function hexToFigmaRGB(hex: string) {
-  hex = hex.replace("#", "");
-  if (hex.length === 3) hex = hex.split("").map((ch) => ch + ch).join("");
-  const num = parseInt(hex, 16);
-  return {
-    r: ((num >> 16) & 255) / 255,
-    g: ((num >> 8) & 255) / 255,
-    b: (num & 255) / 255,
-  };
-}
-
-function figmaRGBToHex(r: number, g: number, b: number) {
-  const toHex = (value: number) =>
-    Math.round(value * 255).toString(16).padStart(2, "0").toUpperCase();
-  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-}

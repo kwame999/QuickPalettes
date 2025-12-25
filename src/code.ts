@@ -1,4 +1,4 @@
-import { hexToFigmaRGB, figmaRGBToHex } from "./color-utils-module"
+import { hexToFigmaRGB, figmaRGBToHex, hexToOklch } from "./color-utils-module"
 import { paletteComponent } from "./palette-component-styling";
 import { buildCssExports } from "./css-export-build"
 import { PaletteItem, ExportOpts, UIMessage } from "./types";
@@ -6,7 +6,6 @@ import { PaletteItem, ExportOpts, UIMessage } from "./types";
 
 figma.showUI(__html__);
 figma.ui.resize(260, 620);
-
 
 // Main handler
 figma.ui.onmessage = async (msg: UIMessage) => {
@@ -47,6 +46,9 @@ figma.ui.onmessage = async (msg: UIMessage) => {
       return;
     }
   }
+
+
+  
 };
 
 
@@ -160,13 +162,14 @@ function createPaletteCard(
 }
 //////////////////////////////////////
 function selectExports(
-  built: { cssVars: string[]; scssVars: string[]; tailwindRgbRefs: string[] },
+  built: { cssVars: string[]; scssVars: string[]; tailwindRgbRefs: string[]; tailwindv4Vars: string[] },
   opts: ExportOpts
 ) {
   return {
     cssVars: opts.cssVars ? built.cssVars : null,
     scssVars: opts.scssVars ? built.scssVars : null,
     tailwindRgbRefs: opts.tailwindRgbRefs ? built.tailwindRgbRefs : null,
+    tailwindv4Vars: opts.tailwindv4Vars ? built.tailwindv4Vars : null,
   };
 }
 

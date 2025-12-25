@@ -1,4 +1,7 @@
 // ---------- Color utils ----------
+import { useOklchConverter } from "@builtwithjavascript/oklch-converter";
+const {hexToOklchString} = useOklchConverter()
+
 function hexToFigmaRGB(hex: string) {
   hex = hex.replace("#", "");
   if (hex.length === 3) hex = hex.split("").map((ch) => ch + ch).join("");
@@ -16,4 +19,10 @@ function figmaRGBToHex(r: number, g: number, b: number) {
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
-export { hexToFigmaRGB, figmaRGBToHex}
+function hexToOklch(hex: string){
+
+  const parsedHexOklcxh = hexToOklchString(hex)
+  return parsedHexOklcxh
+}
+
+export { hexToFigmaRGB, figmaRGBToHex, hexToOklch}

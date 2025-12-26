@@ -5,7 +5,7 @@ import { PaletteItem, ExportOpts, UIMessage } from "./types";
 
 
 figma.showUI(__html__);
-figma.ui.resize(260, 620);
+figma.ui.resize(260, 640);
 
 // Main handler
 figma.ui.onmessage = async (msg: UIMessage) => {

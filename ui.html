@@ -34,19 +34,21 @@
     --primary-color: #FAFAFC;
     --primaryboarder-color: #858585;
     --fieldset-color: #F1F1F1;
-    --fieldsetboarder-color: #95959D;
-    --txthead-color: #3A3B44;
-    --txtsub-color: #636363;
+    --fieldsetboarder-color: #c1c1cb;
+    --txthead-color: #52535a;
+    --txtsub-color: #939191;
     --dropdown-color: #D3D3D3;
-    --dropdownboarder-color: #95959D;
+    --dropdownboarder-color: #b0b0bd;
     --btnprimary-color: #14161f;
     --icon-color: #FFFFFF;
     --container-color: #F1F1F1;
-    --containerboarder-color: #89898E;
+    --containerboarder-color: #c1c1cb;
     --colortabbg-color: #FFFFFF;
     --colortabboarder-color: #9D9DA0;
     --colordot-color: #14161f71;
-
+    --txthex-color: #565656b8;
+    --txthexlabel-color: rgb(215 215 215);
+    --txthexlabelborder-color: #b1b1b185;
 
 
   }
@@ -85,16 +87,22 @@
     border: solid 1px var(--fieldsetboarder-color);
     padding: 4px;
     width: 100%;
-    height: 28px;
+    height: 30px;
     border-radius: 4.8px;
-    margin-top: .2rem
 
+  }
+
+
+  .color-field div
+  {
+    display: flex;
+    margin-top: .2rem
   }
 
   .main-container .helper-tip
   {
     font-size: .68rem;
-    font-weight:400;
+    font-weight:540;
     margin-top: .2rem;
     color: var(--txtsub-color);
   }
@@ -151,9 +159,9 @@
   select
   {
     background-color: var(--dropdown-color);
-    border: solid 1.4px var(--dropdownboarder-color);
+    border: solid 1px var(--dropdownboarder-color);
     padding: .7rem;
-    color: var(--txtsub-color);
+    color: rgb(80 76 76);
     border-radius: 4.8px;
     margin-top: .2rem;
   }
@@ -165,7 +173,7 @@
     border: none;
     color: var(--icon-color);
     border-radius: 4.8px;
-        height: 28px;
+        height: 30px;
     
   }
   .btnGroup button {
@@ -255,8 +263,15 @@
   {
 
    
-    color: var(--txtsub-color);
-    font-weight: 500;
+    color: var(--txthex-color);
+    font-weight: 540;
+    background-color: var(--txthexlabel-color);
+    width: fit-content;
+    padding: 1px;
+    border: solid 1px var(--txthexlabelborder-color);
+    border-radius: 2px;
+    font-size: 9.8px;
+  
 
 
   }
@@ -264,17 +279,17 @@
   .currentHexRow .hexTextWrap .hexName
   {
 
-    color: rgb(167, 166, 166);
-    background-color: rgb(228, 228, 228);
+    color: rgb(80 76 76);
     width: fit-content;
     padding: 0px 4px;
+    font-weight: 400;
 
 
   }
   .deleteBtn
   {
     background-color: transparent;
-    margin-bottom: 1.4px;
+    /* margin-bottom: 1.4px; */
     margin-left: 8px;
     cursor: pointer;
   }
@@ -291,7 +306,8 @@
   {
 
     background-color: transparent;
-    display: block;  
+    display: flex;  
+    align-items: center;
     margin-left: auto ;
     font-size: 13px; 
     color: var(--txthead-color); 
@@ -302,24 +318,26 @@
 
   .btnClear p
   {
-    background-color: #bbbbc0;
+    /* background-color: #bbbbc0; */
     color: #414452;
-    padding: 2px;
+    /* padding: 2px; */
     border-radius: 4px;
-    width: 38px;
+    /* width: 38px; */
     font-size: 11px;
-    text-align: center;
+    /* text-align: center; */
   }
 
 
   .colorDot
   {
-    border: solid .1px var(--colordot-color);
+    border: solid .08px var(--colordot-color);
     width: 6.8px;
     height: 6.8px;
     margin-left: auto;
     transform: rotate(45deg);
     border-radius: 1.8px;
+    border-style: outset;
+    clip-path: polygon(10% 0%, 100% 0%, 100% 90%, 90% 100%, 0% 100%, 0% 10%)
   }
 
   .toast-copy svg:nth-child(3)
@@ -368,6 +386,11 @@
     border-radius: 14px;
     border: solid .4px var(--fieldsetboarder-color);
     scrollbar-color: transparent transparent;
+  }
+
+  .btnAdd
+  {
+    background-color: #9C9DA2;
   }
   
   @keyframes toastSlideUp {
@@ -495,12 +518,12 @@
 
         <div class="hex-field">
           
-          <label for="valueHexField">Your hex code/number</label>
+          <label for="valueHexField">Hex code</label>
           
           <div style="display: flex; align-items: center; justify-content: center;     margin-top: .2rem
 ">
                 <input type="text" name="valueHexField" id="hexField" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: none;">
-                <button id="btnAdd" style="width: 25%; border: none; border-bottom-left-radius: 0; border-top-left-radius: 0;">
+                <button id="btnAdd" style="width: 25%; border: none; border-bottom-left-radius: 0; border-top-left-radius: 0; background-color: #9C9DA2;">
                   
                     <svg width="22.4" height="22.4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M6 12H12M12 12H18M12 12V18M12 12V6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -513,8 +536,7 @@
         
         <div class="helper-tip">
 
-          <p>Color code should start with a `#`<br>
-            and is < 7 characters. e.g., #323232
+          <p>Color code starts with a `#` & < 7 characters
           </p>
 
         </div>
@@ -525,8 +547,8 @@
 
         <div class="color-field">
        
-            <label for="colorNameField">Your color name (optional)</label>
-               <div style="display: flex;">
+            <label for="colorNameField">Color name</label>
+               <div>
             
                   <input type="text" name="colorNameField" id="nameField">
       
@@ -559,11 +581,15 @@
 
       </div>
 
-    <button id="btnClear" class="btnClear"><p>clear</p></button>
+    <button id="btnClear" class="btnClear"><p>clear</p>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16 16L12 12M12 12L8 8M12 12L16 8M12 12L8 16" stroke="#414452" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+</button>
    <div class="options-check">
 
 
-    <label for="cssExportSelect">CSS export (optional)</label>
+    <label for="cssExportSelect">Export CSS</label>
     <select name="cssexport" id="cssExportSelect" style="height: 34px; padding: 2px 7px;">
       <option value="none">None</option>
       <option value="vanilla">VanillaCSS</option>
@@ -719,7 +745,7 @@ border: 1px solid rgba(14, 12, 12, 0.726);
   //initial states:
   uiBtnState(colorPaletteObjects);
   updateCount();
-
+  
 
 
   // 
@@ -844,7 +870,6 @@ border: 1px solid rgba(14, 12, 12, 0.726);
       renderPaletteItem(item);
       hexValueField.value = "";
       nameValueField.value = "";
-
       updateCount();
       return colorPaletteObjects;
   }
@@ -998,17 +1023,44 @@ parent.postMessage({
 
   function uiBtnState(colorPaletteObjects){
 
-      if (colorPaletteObjects.length === 0){
+      const hexAddBtnState = () => {
 
-      btn.style.backgroundColor = '#9C9DA2'
-      btn.style.cursor = 'not-allowed'
-  }
+        if (!hexValueField.value){
 
-   if (colorPaletteObjects.length !== 0){
+            document.getElementById("btnAdd")
+            .style.backgroundColor = '#9C9DA2'
 
-      btn.style.backgroundColor = 'var(--btnprimary-color)'
-      btn.style.cursor = 'auto'
-  }
+            } else { document.getElementById("btnAdd")
+                    .style.backgroundColor = 'var(--btnprimary-color)' }
+
+      }
+
+      const createBtnState = () => {
+
+        if (colorPaletteObjects.length === 0){
+
+              btn.style.backgroundColor = '#9C9DA2'
+              btn.style.cursor = 'not-allowed'
+            }
+
+        if (colorPaletteObjects.length !== 0){
+
+              btn.style.backgroundColor = 'var(--btnprimary-color)'
+              btn.style.cursor = 'auto'
+            }
+
+
+
+      }
+
+      createBtnState();
+      hexAddBtnState();
+
+    
+      hexValueField.addEventListener("input", ()=> {
+        hexAddBtnState();
+      })
+
   }
 
 

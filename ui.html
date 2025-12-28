@@ -44,13 +44,13 @@
     --container-color: #F1F1F1;
     --containerboarder-color: #c1c1cb;
     --colortabbg-color: #FFFFFF;
-    --colortabboarder-color: #9D9DA0;
+    --colortabboarder-color: #cbcbcb;
     --colordot-color: #14161f71;
     --txthex-color: #565656b8;
     --txthexlabel-color: rgb(215 215 215);
     --txthexlabelborder-color: #b1b1b185;
-
-
+    --invisbtn-color: #414141d5;
+    --inputfoccus-color: #0a0a0a;
   }
   body
   {
@@ -63,7 +63,7 @@
     border: none;
     overflow: hidden;
     align-items: center;
-  
+    
     
 
   }
@@ -77,9 +77,17 @@
     align-items: center;
     gap: 1.9rem;
     align-items: center;
+    letter-spacing: .2;
+    
     
   }
 
+  form input:focus
+  {
+    /* outline: none; */
+    outline-color: var(--inputfoccus-color);
+    outline:thin solid
+  }
   form .main-container .setHexNameValue input
   {
 
@@ -102,9 +110,10 @@
   .main-container .helper-tip
   {
     font-size: .68rem;
-    font-weight:540;
+    font-weight:440;
     margin-top: .2rem;
     color: var(--txtsub-color);
+    letter-spacing: .4;
   }
 
   .main-container .setHexNameValue label
@@ -127,7 +136,7 @@
     
     margin-top: 4px;
     background-color: rgba(223, 223, 223, 0.637);
-    border: var(--containerboarder-color) 1px solid;
+    border: var(--containerboarder-color) 1px dashed;
     height: 21vh;
     border-radius: 6.8px;
     overflow-y: auto;
@@ -136,6 +145,9 @@
     cursor: not-allowed;
     scroll-margin: 0;
     scroll-padding: 0;
+    
+      background-image: repeating-linear-gradient(125deg, #d1d1d1, #d1d1d1 1px, #eee 1px, #eee 14px);
+
 
   }
 
@@ -166,6 +178,12 @@
     margin-top: .2rem;
   }
 
+  select:focus
+  {
+        outline-color: var(--inputfoccus-color);
+    outline:thin solid
+  }
+
   button
   {
     padding: .2rem;
@@ -193,6 +211,7 @@
     width: 70%;
     padding: .2rem;
   }
+  
 
   .options-check label
   {
@@ -291,7 +310,6 @@
     background-color: transparent;
     /* margin-bottom: 1.4px; */
     margin-left: 8px;
-    cursor: pointer;
   }
 
   .deleteBtn svg
@@ -309,24 +327,17 @@
     display: flex;  
     align-items: center;
     margin-left: auto ;
-    font-size: 13px; 
-    color: var(--txthead-color); 
-    margin-bottom: 0; 
-    padding: 0; 
-    cursor: pointer;
+    color: #9C9DA2; 
+    font-size: .7rem;
+    transition: .8ms;
+    font-weight: 450;
+
   }
 
-  .btnClear p
+    .btnClear:hover
   {
-    /* background-color: #bbbbc0; */
-    color: #414452;
-    /* padding: 2px; */
-    border-radius: 4px;
-    /* width: 38px; */
-    font-size: 11px;
-    /* text-align: center; */
+    color: var(--invisbtn-color)
   }
-
 
   .colorDot
   {
@@ -361,14 +372,11 @@
     transform: translate(-50%, -50%);
 
   }
-  .code-view button
-  {
-    background-color: var(--btnprimary-color)
-  }
+
 
   .code-view button svg
   {
-    color: var(--icon-color);
+    stroke: #14161f;
   }
   .code-view .main-tab
   {
@@ -391,6 +399,11 @@
   .btnAdd
   {
     background-color: #9C9DA2;
+  }
+
+  .btnClose svg
+  {
+    stroke: var(--icon-color)
   }
   
   @keyframes toastSlideUp {
@@ -420,6 +433,12 @@
     100%{transform: translateY(-1000px); opacity: 0; display: none;}
   }
 
+  @keyframes backDropFadeIn {
+    0% {backdrop-filter: blur(0px);}   
+    100% { backdrop-filter: blur(3px);
+      }
+  }
+
   .cover
   {
     background-color: black;
@@ -444,9 +463,36 @@
     border-radius: 40px;
   }
 
-  
+  .back-drop
+  {
+    background: rgba(0, 0, 0, 0.2); display: none; width: 100%; position: absolute; 
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(14, 12, 12, 0.726);
+    height: 100vh;
+    animation: backDropFadeIn .8s .4ms forwards ease-in-out;
+  }
   /*///////////////////////////////////////////*/
+  .btnCopy
+  {
+    margin-left: 0;
+    position: fixed;
+    left: 165;
+    bottom: 30px;
+    background-color: #14161f;
+    border-radius: 100%;
+    width: 40;
+    height: 40;
+  }
 
+  .btnClose
+  {
+    background-color: transparent;
+  }
+
+  .css-export-name
+  {
+    text-transform: capitalize;
+  }
 </style>
 
 <body>
@@ -581,11 +627,7 @@
 
       </div>
 
-    <button id="btnClear" class="btnClear"><p>clear</p>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M16 16L12 12M12 12L8 8M12 12L16 8M12 12L8 16" stroke="#414452" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-</button>
+    <button id="btnClear" class="btnClear">Clear</button>
    <div class="options-check">
 
 
@@ -657,24 +699,18 @@
   </div>
 </form>
 
-<div class="back-drop" style="background: rgba(0, 0, 0, 0.2); display: none; width: 100%; position: absolute; 
-box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-backdrop-filter: blur(2px);
--webkit-backdrop-filter: blur(2px);
-border: 1px solid rgba(14, 12, 12, 0.726);
-    height: 100vh;
-"></div>
+<div class="back-drop"></div>
 
   <div class="code-view" style="display: none; line-height: 1;">
 
         <div class="main-tab" style="padding-right: 0px;">
 
-          <h4 class="css-export-name">VanillaCSS</h4>
+          <h4 class="css-export-name"></h4>
           <button class="btnClose">
             
           
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18 18L12 12M12 12L6 6M12 12L18 6M12 12L6 18" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg width="18" height="18" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 18L12 12M12 12L6 6M12 12L18 6M12 12L6 18" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
 
 
@@ -684,7 +720,7 @@ border: 1px solid rgba(14, 12, 12, 0.726);
 
          <div class="div" contenteditable="false" style="position: relative;">
 
-            <button class="btnCopy" id="btnCopied" style="margin-left: 150px; position: fixed; left: 30px; bottom: 50px; background-color: var(--btnprimary-color); border-radius: 100%;">
+            <button class="btnCopy" id="btnCopied">
             
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="pointer-events: none;">
               <path d="M9 9V6.2002C9 5.08009 9 4.51962 9.21799 4.0918C9.40973 3.71547 9.71547 3.40973 10.0918 
@@ -748,10 +784,9 @@ border: 1px solid rgba(14, 12, 12, 0.726);
   
 
 
-  // 
-  // Helpers
-  // 
-
+  
+  // Validator
+  
   function normalizeHex(input) {
 
   const raw = (input ?? "").trim();
@@ -765,8 +800,9 @@ border: 1px solid rgba(14, 12, 12, 0.726);
   return HEX_REGEX.test(hex) ? hex : null;
 
   }
-////////////////////////////////////////////////////////////////////////
   
+
+  // Counter
   function updateCount() {
 
     if (countSpan && colorPaletteObjects.length > 0) {
@@ -785,13 +821,13 @@ border: 1px solid rgba(14, 12, 12, 0.726);
     
   }
 
-  
+  //Hex id
   function makeId() {
 
     return String(Date.now()) + "-" + Math.random().toString(16).slice(2);
   }
 
-
+  //Item row
   function renderPaletteItem(item) {
     const row = document.createElement("div");
     row.className = "currentHexRow";
@@ -837,7 +873,7 @@ border: 1px solid rgba(14, 12, 12, 0.726);
 
   }
 
-
+  // Pushing in arrayh
   function addColor() {
 
     const normalized = normalizeHex(hexValueField.value);
@@ -850,11 +886,11 @@ border: 1px solid rgba(14, 12, 12, 0.726);
 
           setTimeout(()=>{
 
-          btnAdd.style.backgroundColor = "var(--btnprimary-color)"
+          uiBtnState(colorPaletteObjects)
           btnAdd.style.cursor = 'auto'
 
           }, 2000)
-          toastInfo("forbidden", "Invalid hex. Use RGB or RRGGBB format.");
+          toastInfo("forbidden", "Invalid, Use RGB or RRGGBB");
           
           return
       }
@@ -871,10 +907,11 @@ border: 1px solid rgba(14, 12, 12, 0.726);
       hexValueField.value = "";
       nameValueField.value = "";
       updateCount();
+      // uiBtnState(colorPaletteObjects)
       return colorPaletteObjects;
   }
 
-
+  // Deleting palette
   function deleteColorById(id) {
     const idx = colorPaletteObjects.findIndex(c => c.id === id);
     if (idx === -1) return;
@@ -887,7 +924,7 @@ border: 1px solid rgba(14, 12, 12, 0.726);
     updateCount();
   }
 
-
+  // Palette render options
   function getPaletteStylingOptions() {
   const v = (paletteStylingSelect?.value || "none").toLowerCase();
 
@@ -944,19 +981,19 @@ border: 1px solid rgba(14, 12, 12, 0.726);
 
   function postCreateLocalStyles(){
 
- const { optionHex, optionName, optionNone } = getPaletteStylingOptions();
- const exportOpts = optionCSSExports();
+  const { optionHex, optionName, optionNone } = getPaletteStylingOptions();
+  const exportOpts = optionCSSExports();
 
-parent.postMessage({
-  pluginMessage: {
-    type: "create-from-local-styles",
-    optionHex,
-    optionName,
-    optionNone,
-    exportOpts,
-    colorPaletteObjects,
+  parent.postMessage({
+    pluginMessage: {
+      type: "create-from-local-styles",
+      optionHex,
+      optionName,
+      optionNone,
+      exportOpts,
+      colorPaletteObjects,
 
-  },
+    },
 
 
 }, "*")
@@ -1254,10 +1291,12 @@ parent.postMessage({
     ].join("\n");
   }
 
-  // inject into modal
+  // injecting into modal
   const view = document.querySelector(".main-view");
   view.textContent = text;
-
+  const css = document.querySelector(".css-export-name")
+  const cssType = v
+  css.textContent = cssType 
   // show modal + backdrop
   document.querySelector(".code-view").style.display = "block";
   document.querySelector(".back-drop").style.display = "block";

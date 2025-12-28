@@ -8,27 +8,6 @@
 
   }
   
-  /* :root
-  {
-    --primary-color: #1b1c22;
-    --primaryboarder-color: #3e3e53;
-    --fieldset-color: #2a2b36;
-    --fieldsetboarder-color: #494963;
-    --txthead-color: #DBDBDB;
-    --txtsub-color: #B2B2B7;
-    --dropdown-color: #242430;
-    --dropdownboarder-color: #3a3a4e;
-    --btnprimary-color: #0B0C12;
-    --icon-color: #FFFFFF;
-    --container-color: #262730;
-    --containerboarder-color: #464766;
-    --colortabbg-color: #40414e;
-    --colortabboarder-color: #64658F;
-
-
-
-  } */
-
     :root
   {
     --primary-color: #FAFAFC;
@@ -57,6 +36,7 @@
     --importbtnbg-color: rgb(209, 209, 209);
     --importicon-color: #505050;
   }
+
   body
   {
     
@@ -69,12 +49,11 @@
     overflow: hidden;
     align-items: center;
     
-    
-
   }
 
   form
   {
+
     color: var(--txthead-color);
     padding: 18px;
     display: flex;
@@ -83,7 +62,6 @@
     gap: 1.9rem;
     align-items: center;
     letter-spacing: .2;
-    
     
   }
 
@@ -102,7 +80,6 @@
     width: 100%;
     height: 30px;
     border-radius: 4.8px;
-    
 
   }
 
@@ -162,7 +139,6 @@
     scroll-padding: 0;
     background-image: repeating-linear-gradient(134deg, #d1d1d1, #d1d1d1 1px, #eee 1px, #eee 14px);
 
-
   }
 
   .paletteHead
@@ -174,8 +150,6 @@
   }
 
 
-
-
   .options-check
   {
     display: flex;
@@ -184,6 +158,7 @@
 
   select
   {
+
     background-color: var(--dropdown-color);
     border: solid 1px var(--dropdownboarder-color);
     padding: 2px 7px;
@@ -191,6 +166,7 @@
     border-radius: 4.8px;
     margin-top: .2rem;
     height: 34px;
+
   }
 
   select:focus
@@ -201,6 +177,7 @@
 
   button
   {
+
     padding: .2rem;
     background-color: var(--btncreatesecond-color);
     border: none;
@@ -209,12 +186,16 @@
     height: 30px;
     
   }
-  .btnGroup button {
+  .btnGroup button 
+  {
+
     margin-top: 7px;
+
   }
 
   .btnGroup button:nth-child(3)
   {
+
     font-weight: 600;
     height: 38;
     background-color: var(--importbtnbg-color);
@@ -229,12 +210,14 @@
 
   .btnGroup button:nth-child(2)
   {
+
     width: 70%;
     background-color: var(--btncreatesecond-color);
     font-weight: 600;
     padding: 5px;
     height: 38px;
     cursor: not-allowed;
+
   }
   
 
@@ -249,6 +232,7 @@
 
   .color-tab
   {
+
     display: flex;
     background-color: var(--colortabbg-color);
     justify-content: space-between;
@@ -259,10 +243,12 @@
     padding: 5px 8px;
     align-items: center;
     font-size: .78rem;
+
   }
 
   .toast-copy
   {
+
     display: flex;
     background-color: var(--primary-color);
     border: solid .4px #b8b5b5;
@@ -282,14 +268,17 @@
 
   .toast-copy p
   {
+
     margin-left: 11px;
     color: var(--btnprimary-color);
     font-weight: 500;
+
   }
 
 
   .currentHexRow
   {
+
     display: flex;
     background-color: var(--colortabbg-color);
     align-items: center;
@@ -301,11 +290,11 @@
     border-right: 0px;
     cursor: auto;
     font-size: .78rem;
+
   }
     
   .currentHexRow .hexTextWrap .hexBlock 
   {
-
    
     color: var(--txthex-color);
     font-weight: 540;
@@ -316,8 +305,6 @@
     border-radius: 2px;
     font-size: 9.8px;
   
-
-
   }
 
   .currentHexRow .hexTextWrap .hexName
@@ -328,12 +315,10 @@
     padding: 0px 4px;
     font-weight: 400;
 
-
   }
   .deleteBtn
   {
     background-color: transparent;
-    /* margin-bottom: 1.4px; */
     margin-left: 8px;
   }
 
@@ -342,7 +327,6 @@
     height: 18px;
     width: 18px;
     fill: rgba(255, 0, 0, 0.233);
-
   }
 
   .btnClear
@@ -471,7 +455,7 @@
 
   .cover
   {
-    background-color: rgb(250, 250, 250);
+    background-color: rgb(255, 255, 255);
     width: 100%;
     position: absolute;
     height: 100vh;
@@ -481,15 +465,15 @@
     animation: coverLogoSlideUp 1s 1.8s forwards ease-in-out ;
     flex-direction: column;
     gap: .8rem;
-    color: rgb(207, 207, 207);
+    color: transparent;
     font-weight: 500;
     font-style: italic;
   }
   
   .cover img
   {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 40px;
   }
 
@@ -501,7 +485,7 @@
     height: 100vh;
     animation: backDropFadeIn .8s .4ms forwards ease-in-out;
   }
-  /*///////////////////////////////////////////*/
+  
   .btnCopy
   {
     margin-left: 0;
@@ -528,7 +512,7 @@
 <body>
   
 <div class="cover"><img src="data:image/png;base64,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" alt="">
-<p>Quick Palettes</p>
+
 
 </div>
 
@@ -722,7 +706,6 @@
   // Theme system detection (Dark theme not supported yet)
   
   const media = window.matchMedia?.("(prefers-color-scheme: dark)");
-
   function applySystemTheme() {
     const theme = media && media.matches ? "dark" : "light";
     document.documentElement.dataset.theme = theme;
@@ -840,7 +823,7 @@
 
   }
 
-  // Pushing in arrayh
+  // Pushing in array
   function addColor() {
 
     const normalized = normalizeHex(hexValueField.value);
@@ -916,7 +899,7 @@
 
 }
 
-
+  // Sending msg to logic
   function postCreate() {
   const { optionHex, optionName, optionNone } = getPaletteStylingOptions();
   const exportOpts = optionCSSExports();

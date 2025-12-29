@@ -1,4 +1,4 @@
-<img width="987" height="299" alt="Frame 80" src="https://github.com/user-attachments/assets/c588327b-a046-4a7e-adf6-282257be162d" />
+<img width="887" height="299" alt="Frame 80" src="https://github.com/user-attachments/assets/c588327b-a046-4a7e-adf6-282257be162d" />
 <h1>Quick Palettes</h1>
 
 Quick Palettes streamlines design system workflows by instantly generating accessible color palettes and production-ready assets. Whether you're building from scratch or importing existing local styles, QuickPalettes bridges the gap between design and code with seamless exports for <strong>Vanilla CSS, SASS, and Tailwind (v3 & v4)</strong><br>
@@ -10,6 +10,7 @@ Quick Palettes streamlines design system workflows by instantly generating acces
 </ul>
 
 ## Demo
+![cursorful-video-1767041922514-ezgif com-video-to-gif-converter (1)](https://github.com/user-attachments/assets/ba2eef61-c498-4559-bbfd-2f4e2c460486)
 
 ## How it works
 

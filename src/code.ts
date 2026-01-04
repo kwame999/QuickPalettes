@@ -84,93 +84,112 @@ function createPaletteCard(
   item: PaletteItem,
   opts: { optionHex: boolean; optionName: boolean; optionNone: boolean;  },
 ) {
-  const { styles } = paletteComponent;
-  const containerStyles = styles.textNodeContainer;
+    const { styles } = paletteComponent;
+    const containerStyles = styles.textNodeContainer;
 
-  // text
-  const hexText = figma.createText();
-  hexText.characters = item.hexCode;
-  hexText.fontSize = 24;
-  hexText.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 }, opacity: 0.5 }];
+    // text
+    const hexText = figma.createText();
+    hexText.characters = item.hexCode;
+    hexText.fontSize = 24;
+    hexText.fills = [{ type: "SOLID", color: { r: 0, g: 0, b: 0 }, opacity: 0.5 }];
 
-  const nameText = figma.createText();
-  nameText.characters = item.hexName || "";
-  nameText.fontSize = 16;
+    const nameText = figma.createText();
+    nameText.characters = item.hexName || "";
+    nameText.fontSize = 16;
 
-  const textNodeContainer = figma.createFrame();
-  textNodeContainer.layoutMode = containerStyles.direction;
-  textNodeContainer.counterAxisAlignItems = containerStyles.alignChildren;
-  textNodeContainer.primaryAxisSizingMode = containerStyles.xaxisSizing;
-  textNodeContainer.counterAxisSizingMode = containerStyles.zaxisSizing;
+    const textNodeContainer = figma.createFrame();
+    textNodeContainer.layoutMode = containerStyles.direction;
+    textNodeContainer.counterAxisAlignItems = containerStyles.alignChildren;
+    textNodeContainer.primaryAxisSizingMode = containerStyles.xaxisSizing;
+    textNodeContainer.counterAxisSizingMode = containerStyles.zaxisSizing;
 
-  textNodeContainer.fills = [
-    {
-      type: containerStyles.backgroundType,
-      color: {
-        r: containerStyles.backgroundColor[0],
-        g: containerStyles.backgroundColor[1],
-        b: containerStyles.backgroundColor[2],
+    textNodeContainer.fills = [
+      {
+        type: containerStyles.backgroundType,
+        color: {
+          r: containerStyles.backgroundColor[0],
+          g: containerStyles.backgroundColor[1],
+          b: containerStyles.backgroundColor[2],
+        },
+        opacity: containerStyles.opacity,
       },
-      opacity: containerStyles.opacity,
-    },
-  ];
+    ];
 
-  if (opts.optionHex) textNodeContainer.appendChild(hexText);
-  if (opts.optionName) textNodeContainer.appendChild(nameText);
-  if (!opts.optionHex && !opts.optionName) textNodeContainer.visible = false;
+  
+      if (opts.optionHex) {
 
-  // color block
-  const colorBlock = figma.createRectangle();
-  colorBlock.resize(styles.colorBlock.width, styles.colorBlock.height);
-  colorBlock.cornerRadius = styles.colorBlock.cornerRadius;
-  colorBlock.fills = [{ type: "SOLID", color: hexToFigmaRGB(item.hexCode) }];
+          textNodeContainer.appendChild(hexText);
+          !opts.optionName && nameText.remove();
 
-  // wrap
-  const wrapPalette = figma.createFrame();
-  wrapPalette.layoutMode = "VERTICAL";
-  wrapPalette.primaryAxisSizingMode = "AUTO";
-  wrapPalette.counterAxisSizingMode = "AUTO";
+      }
 
-  wrapPalette.paddingTop = styles.wrapPalette.padding.top;
-  wrapPalette.paddingBottom = styles.wrapPalette.padding.bottom;
-  wrapPalette.paddingLeft = styles.wrapPalette.padding.left;
-  wrapPalette.paddingRight = styles.wrapPalette.padding.right;
-  wrapPalette.itemSpacing = styles.wrapPalette.spacing;
+      if (opts.optionName) {
+        
+          textNodeContainer.appendChild(nameText);
+          !opts.optionHex && hexText.remove();
 
-  wrapPalette.cornerRadius = styles.wrapPalette.cornerRadius;
-  wrapPalette.fills = [{ type: "SOLID", color: styles.wrapPalette.fillColor }];
-  wrapPalette.strokes = [{ type: "SOLID", color: styles.wrapPalette.strokeColor }];
-  wrapPalette.strokeWeight = 0.8;
+      }
 
-  wrapPalette.effects = [
-    {
-      type: "DROP_SHADOW",
-      color: { r: 0.804, g: 0.788, b: 0.788, a: 0.25 },
-      offset: { x: 0, y: 4 },
-      radius: 4,
-      visible: true,
-      spread: 0,
-      blendMode: "NORMAL",
-    },
-  ];
+      if (!opts.optionHex && !opts.optionName) {
 
-  wrapPalette.primaryAxisAlignItems = "CENTER";
-  wrapPalette.appendChild(colorBlock);
-  wrapPalette.appendChild(textNodeContainer);
+          textNodeContainer.visible = false;
+          hexText.remove();
+          nameText.remove();
+          
+      }
 
-  return wrapPalette;
-}
-//////////////////////////////////////
-function selectExports(
-  built: { cssVars: string[]; scssVars: string[]; tailwindRgbRefs: string[]; tailwindv4Vars: string[] },
-  opts: ExportOpts
-) {
-  return {
-    cssVars: opts.cssVars ? built.cssVars : null,
-    scssVars: opts.scssVars ? built.scssVars : null,
-    tailwindRgbRefs: opts.tailwindRgbRefs ? built.tailwindRgbRefs : null,
-    tailwindv4Vars: opts.tailwindv4Vars ? built.tailwindv4Vars : null,
-  };
+    // color block
+    const colorBlock = figma.createRectangle();
+    colorBlock.resize(styles.colorBlock.width, styles.colorBlock.height);
+    colorBlock.cornerRadius = styles.colorBlock.cornerRadius;
+    colorBlock.fills = [{ type: "SOLID", color: hexToFigmaRGB(item.hexCode) }];
+
+    // wrap
+    const wrapPalette = figma.createFrame();
+    wrapPalette.layoutMode = "VERTICAL";
+    wrapPalette.primaryAxisSizingMode = "AUTO";
+    wrapPalette.counterAxisSizingMode = "AUTO";
+
+    wrapPalette.paddingTop = styles.wrapPalette.padding.top;
+    wrapPalette.paddingBottom = styles.wrapPalette.padding.bottom;
+    wrapPalette.paddingLeft = styles.wrapPalette.padding.left;
+    wrapPalette.paddingRight = styles.wrapPalette.padding.right;
+    wrapPalette.itemSpacing = styles.wrapPalette.spacing;
+
+    wrapPalette.cornerRadius = styles.wrapPalette.cornerRadius;
+    wrapPalette.fills = [{ type: "SOLID", color: styles.wrapPalette.fillColor }];
+    wrapPalette.strokes = [{ type: "SOLID", color: styles.wrapPalette.strokeColor }];
+    wrapPalette.strokeWeight = 0.8;
+
+    wrapPalette.effects = [
+      {
+        type: "DROP_SHADOW",
+        color: { r: 0.804, g: 0.788, b: 0.788, a: 0.25 },
+        offset: { x: 0, y: 4 },
+        radius: 4,
+        visible: true,
+        spread: 0,
+        blendMode: "NORMAL",
+      },
+    ];
+
+    wrapPalette.primaryAxisAlignItems = "CENTER";
+    wrapPalette.appendChild(colorBlock);
+    wrapPalette.appendChild(textNodeContainer);
+
+    return wrapPalette;
+  }
+  //////////////////////////////////////
+  function selectExports(
+    built: { cssVars: string[]; scssVars: string[]; tailwindRgbRefs: string[]; tailwindv4Vars: string[] },
+    opts: ExportOpts
+  ) {
+    return {
+      cssVars: opts.cssVars ? built.cssVars : null,
+      scssVars: opts.scssVars ? built.scssVars : null,
+      tailwindRgbRefs: opts.tailwindRgbRefs ? built.tailwindRgbRefs : null,
+      tailwindv4Vars: opts.tailwindv4Vars ? built.tailwindv4Vars : null,
+    };
 }
 
 
